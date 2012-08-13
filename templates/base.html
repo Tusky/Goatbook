@@ -1,7 +1,7 @@
-{% load thumbnail %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+{% load thumbnail %}
 <head>
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" type="text/css" media="screen" />
@@ -27,7 +27,8 @@
                 </div>
                 <span id="profile_name">{{ user.get_full_name }}</span>
             {% else %}
-                <form action="/login/">
+                <form action="/login/" method="POST">
+                    {% csrf_token %}
                     <input type="text" name="username" id="id_username" />
                     <input type="password" name="password" id="id_password" />
                     <input type="submit" value="Log In" />

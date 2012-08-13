@@ -26,6 +26,7 @@ body{
 
 #profile{
     float: right;
+    margin-right: 10px;
 }
 .profile_image_small{
     text-align: center;

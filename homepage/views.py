@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 
 def HomePage(request):
@@ -6,4 +6,4 @@ def HomePage(request):
         User = request.user
         context = { 'profiles' : User }
         return render_to_response('home.html', context, context_instance=RequestContext(request))
-    return render_to_response('home.html')
+    return render(request, 'home.html')
