@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -63,3 +64,12 @@ def Specific_User_Profile_Show(request,username):
 def User_Profile_Logout(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def User_Profile_Search(request):
+    if request.method == 'POST':
+        search_keyword = request.POST['search_keyword']
+        users = User.objects.filter(Q(username__icontains=search_keyword) | Q(first_name__icontains=search_keyword) | Q(last_name__icontains=search_keyword))
+        context = {
+            'search_results' : users
+        }
+        return render_to_response('search.html', context, context_instance=RequestContext(request))

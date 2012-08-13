@@ -4,6 +4,7 @@
 {% load thumbnail %}
 <head>
     <title>{% block title %}{% endblock title %}</title>
+    <link href='http://fonts.googleapis.com/css?family=Rammetto+One' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" type="text/css" media="screen" />
     {% block css %}{% endblock css %}
     {% block js %}{% endblock js %}
@@ -13,8 +14,9 @@
     <div id="header">
         <span id="site_logo">goatbook</span>
         <div id="searchbar">
-            <form action="" method="post">
-                <input type="search" />
+            <form action="/search/" method="POST">
+                {% csrf_token %}
+                <input type="search" name="search_keyword"/>
                 <input type="submit" value="Search!" />
             </form>
         </div>

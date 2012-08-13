@@ -24,6 +24,17 @@ body{
     display: inline-block;
 }
 
+#site_logo{
+    font-weight: bold;
+    font-family: 'Rammetto One', cursive;
+    text-transform: uppercase;
+    margin: 5px 20px 0 0;
+}
+
+#searchbar{
+    position: absolute;
+    margin-top: -2px;
+}
 #profile{
     float: right;
     margin-right: 10px;
@@ -39,5 +50,5 @@ body{
 }
 #profile_name{
     position: absolute;
-    margin-bottom: -10px;
+    margin-top: 4px;
 }
