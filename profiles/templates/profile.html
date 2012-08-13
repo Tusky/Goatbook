@@ -1,0 +1,16 @@
+{%load thumbnail %}
+<html>
+<head>
+    <title>{{ user.get_full_name }}</title>
+</head>
+<body>
+{% if user.is_authenticated %}
+    <p>Hi {{ profiles.first_name }}! <a href="/logout/">Log out</a></p>
+    {% thumbnail user.get_profile.profile_pic.path "150x150" as im %}
+        <img src="{{ im.url }}" />
+    {% endthumbnail %}
+{% else %}
+    <p><a href="/login/">Log in</a> <a href="/register/">Register</a></p>
+{% endif %}
+</body>
+</html>
