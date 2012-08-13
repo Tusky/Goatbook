@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from profiles.forms import RegistrationForm, LoginForm
 from profiles.models import Profile
+from django.contrib.auth import logout
 
 def User_Profile_Registration(request):
     if request.user.is_authenticated():
@@ -49,7 +50,6 @@ def User_Profile_Show(request):
     user = request.user
     context = {
                 'profiles' : user,
-                'username' : username,
               }
     return render_to_response('profile.html', context, context_instance=RequestContext(request))
 
@@ -60,3 +60,6 @@ def Specific_User_Profile_Show(request,username):
               }
     return render_to_response('profile.html', context, context_instance=RequestContext(request))
 
+def User_Profile_Logout(request):
+    logout(request)
+    return HttpResponseRedirect('/')

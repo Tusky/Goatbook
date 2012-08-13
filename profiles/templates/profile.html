@@ -4,10 +4,10 @@
     <title>{{ user.get_full_name }}</title>
 </head>
 <body>
-aaa -- {{ profiles.first_name }} -- aa
+{{ profiles.first_name }}
 {% if user.is_authenticated %}
-    <p>Hi {{ profiles.first_name }}! <a href="/logout/">Log out</a></p>
-    {% thumbnail user.get_profile.profile_pic.path "150x150" as im %}
+    <p>Hi {{ user.first_name }}! <a href="/logout/">Log out</a></p>
+    {% thumbnail profiles.get_profile.profile_pic.path "150x150" as im %}
         <img src="{{ im.url }}" />
     {% endthumbnail %}
 {% else %}
