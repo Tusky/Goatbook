@@ -47,5 +47,16 @@ def User_Profile_Login(request):
 @login_required
 def User_Profile_Show(request):
     user = request.user
-    context = {'profiles' : user }
+    context = {
+                'profiles' : user,
+                'username' : username,
+              }
     return render_to_response('profile.html', context, context_instance=RequestContext(request))
+
+def Specific_User_Profile_Show(request,username):
+    user = User.objects.get(username=username)
+    context = {
+                'profiles' : user
+              }
+    return render_to_response('profile.html', context, context_instance=RequestContext(request))
+

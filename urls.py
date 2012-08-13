@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^logout', 'homepage.views.user_logout'),
     url(r'^register', 'profiles.views.User_Profile_Registration'),
     url(r'^login', 'profiles.views.User_Profile_Login'),
+    url(r'^profile/(?P<username>\w{1,50})', 'profiles.views.Specific_User_Profile_Show'),
     url(r'^profile', 'profiles.views.User_Profile_Show'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
