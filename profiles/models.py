@@ -9,6 +9,7 @@ class Profile(models.Model):
     countries    = models.ForeignKey(Country, null=True, blank=True)
     user         = models.OneToOneField(User)
     profile_pic  = models.ImageField(upload_to='tmp/', null=True, blank=True)
+    friends      = models.ManyToManyField(User, related_name='uf+')
 
     def __unicode__(self):
         return self.user.get_full_name()

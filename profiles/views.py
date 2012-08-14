@@ -8,7 +8,7 @@ from django.template import RequestContext
 from profiles.forms import RegistrationForm, LoginForm
 from profiles.models import Profile
 from django.contrib.auth import logout
-from datetime import date, datetime
+from datetime import date
 
 def User_Profile_Registration(request):
     if request.user.is_authenticated():
@@ -60,12 +60,15 @@ def User_Profile_Show(request):
 def Specific_User_Profile_Show(request,username):
     user = User.objects.get(username=username)
     age = calculate_age(user.get_profile().birth_date)
+    friendable = Profile.objects.filter(user=request.user,friends=user).count
     context = {
                 'profiles' : user,
                 'age':age,
+                'friendable' : friendable,
                 }
     return render_to_response('profile.html', context, context_instance=RequestContext(request))
 
+@login_required
 def User_Profile_Logout(request):
     logout(request)
     return HttpResponseRedirect('/')
@@ -78,6 +81,11 @@ def User_Profile_Search(request):
             'search_results' : users
         }
         return render_to_response('search.html', context, context_instance=RequestContext(request))
+
+@login_required
+def Specific_User_Profile_Add(request,username):
+    #TODO: adding a user
+    return render_to_response('home.html', { 'text' : "added "+username }, context_instance=RequestContext(request))
 
 def calculate_age(born):
     today = date.today()

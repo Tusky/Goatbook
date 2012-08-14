@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Goatbook{% endblock title %}
 {% block content %}
-    <p>WALL</p>
+    {% if user.is_authenticated %}
+        <p>WALL</p>
+    {% else %}
+        <p>Register for the following benefits...</p>
+    {% endif %}
+    {{ text }}
 {% endblock content %}

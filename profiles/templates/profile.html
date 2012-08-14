@@ -4,18 +4,19 @@
 {% block title %}{{ profiles.first_name }}'s profile{% endblock title %}
 
 {% block content %}
-<div class="user_profile">
-    <div class="picture">
-        {% thumbnail profiles.get_profile.profile_pic.path "150x150" as im %}
-            <img src="{{ im.url }}" />
-        {% endthumbnail %}
+    {% if friendable == 0 %}
+            <div class="add_friend">Add Friend</div>
+    {% endif %}
+    <div class="user_profile">
+        <div class="picture">
+            {% thumbnail profiles.get_profile.profile_pic.path "150x150" as im %}
+                <img src="{{ im.url }}" />
+            {% endthumbnail %}
+        </div>
+        <div class="details">
+            <div class="name">{{ profiles.get_full_name }} <span class="smaller">({{ age }})</span></div>
+            <div class="birthday">{{ profiles.get_profile.birth_date|date:"Y.m.d" }}</div>
+            <div class="country">{{ profiles.get_profile.countries}}</div>
+        </div>
     </div>
-    <div class="details">
-        <div class="name">{{ profiles.get_full_name }} <span class="smaller">({{ age }})</span></div>
-        <div class="birthday">{{ profiles.get_profile.birth_date|date:"Y.m.d" }}</div>
-        <div class="country">{{ profiles.get_profile.countries}}</div>
-    </div>
-</div>
-
-
 {% endblock content %}
