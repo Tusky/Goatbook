@@ -1,0 +1,18 @@
+/* _header.scss */
+
+#header_wrapper{
+  background: $site_color_scheme;
+  height: 35px;
+}
+
+#header{
+  width: 900px;
+  margin: 0 auto;
+  padding-top: 5px;
+}
+
+#site_logo{
+  font-weight: bold;
+  font-family: 'Rammetto One', cursive;
+  text-transform: uppercase;
+}
