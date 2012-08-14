@@ -25,7 +25,7 @@ table { border-collapse: collapse; border-spacing: 0; }
 #site_logo a { font-weight: bold; font-family: 'Rammetto One', cursive; text-transform: uppercase; color: black; text-decoration: none; }
 #site_logo:hover { background-color: #69bd1b; }
 
-#searchbar { display: inline-block; margin-left: 20px; }
+#searchbar { display: inline-block; }
 
 #profile { display: inline-block; float: right; padding: 2px 5px; cursor: pointer; }
 #profile .profile_image_small { width: 30px; height: 30px; float: left; }
@@ -43,12 +43,16 @@ table { border-collapse: collapse; border-spacing: 0; }
 #profile_options ul li:hover { background-color: #73cf1e; }
 #profile_options ul li a { display: block; text-decoration: none; color: black; }
 
+#search_results { display: none; position: absolute; top: 27px; width: 150px; }
+#search_results ul li { display: block; padding: 4px 10px; border: 1px solid #333; background-color: white; padding-left: 10px; }
+
 /* _content.scss */
 #content_wrapper { width: 800px; margin: 0 auto; }
 
 #content { clear: both; padding: 20px; }
 
 .user_profile .picture { float: left; margin: 5px; width: 150px; height: 150px; }
+.user_profile .picture img { vertical-align: middle; }
 .user_profile .details .name { font-size: 24px; }
 
 .smaller { font-size: 50%; }

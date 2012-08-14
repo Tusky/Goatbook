@@ -28,7 +28,6 @@
 
 #searchbar{
   display: inline-block;
-  margin-left: 20px;
 }
 
 #profile{
@@ -94,6 +93,22 @@
         text-decoration: none;
         color:black;
       }
+    }
+  }
+}
+
+#search_results{
+  display: none;
+  position: absolute;
+  top: 27px;
+  width: 150px;
+  ul{
+    li{
+      display: block;
+      padding: 4px 10px;
+      border: 1px solid #333;
+      background-color: white;
+      padding-left: 10px;
     }
   }
 }
