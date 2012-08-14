@@ -8,6 +8,7 @@ from django.template import RequestContext
 from profiles.forms import RegistrationForm, LoginForm
 from profiles.models import Profile
 from django.contrib.auth import logout
+from datetime import date, datetime
 
 def User_Profile_Registration(request):
     if request.user.is_authenticated():
@@ -49,16 +50,20 @@ def User_Profile_Login(request):
 @login_required
 def User_Profile_Show(request):
     user = request.user
+    age = calculate_age(user.get_profile().birth_date)
     context = {
                 'profiles' : user,
+                'age':age,
               }
     return render_to_response('profile.html', context, context_instance=RequestContext(request))
 
 def Specific_User_Profile_Show(request,username):
     user = User.objects.get(username=username)
+    age = calculate_age(user.get_profile().birth_date)
     context = {
-                'profiles' : user
-              }
+                'profiles' : user,
+                'age':age,
+                }
     return render_to_response('profile.html', context, context_instance=RequestContext(request))
 
 def User_Profile_Logout(request):
@@ -73,3 +78,14 @@ def User_Profile_Search(request):
             'search_results' : users
         }
         return render_to_response('search.html', context, context_instance=RequestContext(request))
+
+def calculate_age(born):
+    today = date.today()
+    try:
+        birthday = born.replace(year=today.year)
+    except ValueError:
+        birthday = born.replace(year=today.year, day=born.day-1)
+    if birthday > today:
+        return today.year - born.year - 1
+    else:
+        return today.year - born.year

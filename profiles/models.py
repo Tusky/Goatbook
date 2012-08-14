@@ -5,7 +5,7 @@ from countries.models import *
 from django.utils.translation import ugettext_lazy as _
 
 class Profile(models.Model):
-    birth_date   = models.DateTimeField(_('Birthday'), null=True, blank=True)
+    birth_date   = models.DateField(_('Birthday'), null=True, blank=True)
     countries    = models.ForeignKey(Country, null=True, blank=True)
     user         = models.OneToOneField(User)
     profile_pic  = models.ImageField(upload_to='tmp/', null=True, blank=True)

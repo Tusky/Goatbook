@@ -3,16 +3,97 @@
 #header_wrapper{
   background: $site_color_scheme;
   height: 35px;
+  overflow: hidden;
 }
 
 #header{
-  width: 900px;
+  width: $sitewidth;
   margin: 0 auto;
-  padding-top: 5px;
 }
 
 #site_logo{
-  font-weight: bold;
-  font-family: 'Rammetto One', cursive;
-  text-transform: uppercase;
+  display: inline-block;
+  padding: 11px 5px;
+  a{
+    font-weight: bold;
+    font-family: 'Rammetto One', cursive;
+    text-transform: uppercase;
+    color: black;
+    text-decoration: none;
+  }
+  &:hover{
+    background-color: lighten($site_color_scheme,2);
+  }
+}
+
+#searchbar{
+  display: inline-block;
+  margin-left: 20px;
+}
+
+#profile{
+  display: inline-block;
+  float: right;
+  padding: 2px 5px;
+  cursor: pointer;
+  .profile_image_small{
+    width: 30px;
+    height: 30px;
+    float: left;
+  }
+  .profile_name{
+    font-size: 14px;
+    float: right;
+    margin-top: 9px;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  &:hover, &.active{
+    background-color: lighten($site_color_scheme,2);
+  }
+}
+
+.triangle_down{
+  float: right;
+  margin-top: 4px;
+  margin-left: 5px;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 7.5px 5px 0 5px;
+  border-color: #333 transparent transparent transparent;
+  &.active{
+    border-color: white transparent transparent transparent;
+  }
+}
+
+#header_login{
+  display: inline-block;
+  float: right;
+  padding: 2px 5px;
+}
+
+#profile_options{
+  display: none;
+  position: absolute;
+  top: 0;
+  width: 130px;
+  margin-top: 33px;
+  ul{
+    background-color: $site_color_scheme;
+    li{
+      padding: 5px 10px;
+      &:hover{
+        background-color: lighten($site_color_scheme,6);
+      }
+      a{
+        display: block;
+        text-decoration: none;
+        color:black;
+      }
+    }
+  }
 }
