@@ -116,6 +116,10 @@
         color: black;
         text-decoration: none;
       }
+      &.current{
+        background-color: #ffc0cb;
+      }
     }
   }
 }
+
