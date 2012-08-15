@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^profile/(?P<username>\w{1,50})/remove', 'profiles.views.Specific_User_Profile_Remove',{}, name="specific_remove"),
     url(r'^profile/(?P<username>\w{1,50})', 'profiles.views.Specific_User_Profile_Show',{}, name="specific_url"),
     url(r'^profile/$', 'profiles.views.User_Profile_Show'),
+    url(r'^json/(?P<search_keyword>\w{1,255})', 'profiles.views.json_searching'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
 

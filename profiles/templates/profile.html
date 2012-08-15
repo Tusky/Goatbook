@@ -7,7 +7,9 @@
     {% if friendable == 0 %}
         <div class="add_friend"><a href="/profile/{{ profiles.username }}/add/">Add Friend</a></div>
     {% else %}
-        <div class="remove_friend"><a href="/profile/{{ profiles.username }}/remove/">Remove Friend</a></div>
+        {% if not friendable == "none" %}
+            <div class="remove_friend"><a href="/profile/{{ profiles.username }}/remove/">Remove Friend</a></div>
+        {% endif %}
     {% endif %}
     <div class="user_profile">
         <div class="picture">

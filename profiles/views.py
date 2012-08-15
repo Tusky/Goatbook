@@ -2,13 +2,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from profiles.forms import RegistrationForm, LoginForm
 from profiles.models import Profile
 from django.contrib.auth import logout
 from datetime import date
+from django.utils import simplejson
 
 def User_Profile_Registration(request):
     if request.user.is_authenticated():
@@ -54,18 +55,21 @@ def User_Profile_Show(request):
     context = {
                 'profiles' : user,
                 'age':age,
+                'friendable': "none",
               }
     return render_to_response('profile.html', context, context_instance=RequestContext(request))
 
 def Specific_User_Profile_Show(request,username):
     user = User.objects.get(username=username)
     age = calculate_age(user.get_profile().birth_date)
-    friendable = Profile.objects.filter(user=request.user,friends=user).count
     context = {
                 'profiles' : user,
                 'age':age,
-                'friendable' : friendable,
-                }
+                'friendable': "none",
+    }
+    if not username == request.user.username:
+        context['friendable']=Profile.objects.filter(user=request.user,friends=user).count
+
     return render_to_response('profile.html', context, context_instance=RequestContext(request))
 
 @login_required
@@ -93,6 +97,18 @@ def Specific_User_Profile_Remove(request,username):
     user  = User.objects.get(username=username)
     request.user.get_profile().friends.remove(user)
     return HttpResponseRedirect('/profile/'+username)
+
+def json_searching(request,search_keyword):
+    users = User.objects.filter(Q(username__icontains=search_keyword) | Q(first_name__icontains=search_keyword) | Q(last_name__icontains=search_keyword))
+    id = 0
+    response_data={}
+    for user in users:
+        response_data[id] ={
+            'username': user.username,
+            'fullname': user.get_full_name()
+        }
+        id += 1
+    return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
 
 def calculate_age(born):
     today = date.today()
