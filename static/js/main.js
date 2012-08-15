@@ -14,7 +14,7 @@ $(document).ready(function(){
                     success:    function(data) {
                         $('#search_results ul li').remove()
                         $.each(data, function(index,value){
-                            $('#search_results ul').append('<li><a href="/profile/'+value['username']+'">'+value['fullname']+'</a></li>')
+                            $('#search_results ul').append('<li class="searchy"><a href="/profile/'+value['username']+'"><img src="'+value['imageurl']+'">'+value['fullname']+'</a></li>')
                             if( index == 0 )
                                 $('#search_results ul li:first').addClass('current');
                         })
@@ -26,12 +26,15 @@ $(document).ready(function(){
             }
         }
     }).blur(function() {
-        $(document).unbind('keydown', disableArrowKeys);
+        $(document).unbind('keydown', disableArrowKeys)
+        $('#search_results').hide()
     }).focus(function(){
-        $(document).bind('keydown', disableArrowKeys);
+        $(document).bind('keydown', disableArrowKeys)
+        $('#search_results').show()
     })
 
     $('#search_box').on('keyup',function(ev){
+        //TODO: when not selected anything, and pressing buttons, nothing happens, should select either first or last depending on the button pressed
         ev.preventDefault()
         if( ev.keyCode == 38 && $('li.current').prev().is('li') ){
             ev.preventDefault();
@@ -42,6 +45,11 @@ $(document).ready(function(){
         }else if( ev.keyCode == 13 ){
             window.location = $("li.current a").attr("href");
         }
+    })
+    $("#search_results li").live('mouseover',function(){
+        $(this).addClass('current');
+    }).live('mouseleave',function(){
+        $(this).removeClass('current')
     })
 })
 

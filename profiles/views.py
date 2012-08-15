@@ -105,7 +105,8 @@ def json_searching(request,search_keyword):
     for user in users:
         response_data[id] ={
             'username': user.username,
-            'fullname': user.get_full_name()
+            'fullname': user.get_full_name(),
+            'imageurl': user.get_profile().profile_pic.url,
         }
         id += 1
     #TODO: better results, rated results by similarity/closeness(same country)

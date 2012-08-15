@@ -103,21 +103,38 @@
   display: none;
   position: absolute;
   top: 27px;
-  width: 150px;
+  width: 200px;
   ul{
     li{
       display: block;
-      padding: 4px 10px;
-      border: 1px solid #333;
       background-color: white;
-      padding-left: 10px;
+      overflow: hidden;
+      border: 1px solid #333;
+      border-top-width: 0px;
       a{
+        height: 60px;
+        padding: 2px 10px;
         display: block;
         color: black;
         text-decoration: none;
       }
       &.current{
-        background-color: #ffc0cb;
+        background-color: $site_color_scheme;
+      }
+      &.hover{
+        background-color: darken($site_color_scheme,10);
+      }
+      &:first-child{
+        border-top-width: 1px;
+      }
+      img{
+        padding: 1px;
+        background-color: white;
+        border: 1px solid black;
+        margin: 2px;
+        float: left;
+        max-height: 50px;
+        max-width: 50px;
       }
     }
   }
