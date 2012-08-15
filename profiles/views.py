@@ -84,8 +84,15 @@ def User_Profile_Search(request):
 
 @login_required
 def Specific_User_Profile_Add(request,username):
-    #TODO: adding a user
-    return render_to_response('home.html', { 'text' : "added "+username }, context_instance=RequestContext(request))
+    user  = User.objects.get(username=username)
+    request.user.get_profile().friends.add(user)
+    return HttpResponseRedirect('/profile/'+username)
+
+@login_required
+def Specific_User_Profile_Remove(request,username):
+    user  = User.objects.get(username=username)
+    request.user.get_profile().friends.remove(user)
+    return HttpResponseRedirect('/profile/'+username)
 
 def calculate_age(born):
     today = date.today()
