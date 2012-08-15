@@ -108,6 +108,7 @@ def json_searching(request,search_keyword):
             'fullname': user.get_full_name()
         }
         id += 1
+    #TODO: better results, rated results by similarity/closeness(same country)
     return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
 
 def calculate_age(born):

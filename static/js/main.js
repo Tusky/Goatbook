@@ -6,7 +6,7 @@ $(document).ready(function(){
 
     $('#search_box').keyup(function(){
         var len=$(this).val().length
-        if( len > 0){
+        if( len > 4){
             $.ajax({
                 url:        "/json/"+$(this).val(),
                 success:    function(data) {
