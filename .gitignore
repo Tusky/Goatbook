@@ -2,6 +2,7 @@
 *.log
 *.pot
 *.pyc
+goatbook.db
 local_settings.py
 virtualenv
 *cache*

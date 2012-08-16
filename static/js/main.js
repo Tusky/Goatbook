@@ -34,19 +34,29 @@ $(document).ready(function(){
     })
 
     $('#search_box').on('keyup',function(ev){
-        //TODO: when not selected anything, and pressing buttons, nothing happens, should select either first or last depending on the button pressed
-        ev.preventDefault()
         if( ev.keyCode == 38 && $('li.current').prev().is('li') ){
-            ev.preventDefault();
             $('li.current').removeClass('current').prev().addClass('current')
-        }else if( ev.keyCode == 40 && $('li.current').next().is('li') ){
-            ev.preventDefault();
+        }else if( ev.keyCode == 38 && $('li.current').length == 0 ){
+            $('#search_results li:last-child').addClass('current')
+        }else if( ev.keyCode == 38 && $('li.current').prev().length == 0 ){
+            $('li.current').removeClass('current')
+            $('#search_results li:last-child').addClass('current')
+        }
+        if( ev.keyCode == 40 && $('li.current').next().is('li') ){
             $('li.current').removeClass('current').next().addClass('current')
-        }else if( ev.keyCode == 13 ){
+        }else if( ev.keyCode == 40 && $('li.current').length == 0 ){
+            $('#search_results li:first-child').addClass('current')
+        }else if( ev.keyCode == 40 && $('li.current').next().length == 0 ){
+            $('li.current').removeClass('current')
+            $('#search_results li:first-child').addClass('current')
+        }
+
+        if( ev.keyCode == 13 ){
             window.location = $("li.current a").attr("href");
         }
     })
     $("#search_results li").live('mouseover',function(){
+        $('li.current').removeClass('current')
         $(this).addClass('current');
     }).live('mouseleave',function(){
         $(this).removeClass('current')

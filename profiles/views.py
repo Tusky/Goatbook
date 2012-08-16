@@ -109,7 +109,7 @@ def json_searching(request,search_keyword):
             'imageurl': user.get_profile().profile_pic.url,
         }
         id += 1
-    #TODO: better results, rated results by similarity/closeness(same country)
+    #TODO: better results, rated results by similarity/closeness(same country) -- fuzzywuzzy?
     return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
 
 def calculate_age(born):

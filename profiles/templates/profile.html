@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{%load thumbnail %}
+{% load thumbnail %}
 
 {% block title %}{{ profiles.first_name }}'s profile{% endblock title %}
 
@@ -9,6 +9,8 @@
     {% else %}
         {% if not friendable == "none" %}
             <div class="remove_friend"><a href="/profile/{{ profiles.username }}/remove/">Remove Friend</a></div>
+        {% else %}
+            <div class="edit_yourself"><a href="/edit/">Edit profile</a></div>
         {% endif %}
     {% endif %}
     <div class="user_profile">
