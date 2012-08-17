@@ -2,3 +2,4 @@ django==1.3
 PIL==1.1.7
 sorl-thumbnail
 south
+-e git+git://github.com/seatgeek/fuzzywuzzy.git#egg=fuzzywuzzy

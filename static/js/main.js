@@ -7,14 +7,14 @@ $(document).ready(function(){
     $('#search_box').keyup(function(ev){
         if(ev.keyCode != 38 && ev.keyCode != 40 && ev.keyCode != 13 ){
             ev.preventDefault();
-            var len=$(this).val().length
+            var len=$(this).val().length;
             if( len > 0){
                 $.ajax({
                     url:        "/json/"+$(this).val(),
                     success:    function(data) {
                         $('#search_results ul li').remove()
                         $.each(data, function(index,value){
-                            $('#search_results ul').append('<li class="searchy"><a href="/profile/'+value['username']+'"><img src="'+value['imageurl']+'">'+value['fullname']+'</a></li>')
+                            $('#search_results ul').append('<li class="searchy"><a href="/profile/'+value[0]+'"><img src="'+value[2]+'">'+value[1]+'</a></li>')
                             if( index == 0 )
                                 $('#search_results ul li:first').addClass('current');
                         })

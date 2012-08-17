@@ -10,6 +10,8 @@ from profiles.models import Profile
 from django.contrib.auth import logout
 from datetime import date
 from django.utils import simplejson
+from fuzzywuzzy import fuzz
+from operator import attrgetter
 
 def User_Profile_Registration(request):
     if request.user.is_authenticated():
@@ -99,18 +101,48 @@ def Specific_User_Profile_Remove(request,username):
     return HttpResponseRedirect('/profile/'+username)
 
 def json_searching(request,search_keyword):
-    users = User.objects.filter(Q(username__icontains=search_keyword) | Q(first_name__icontains=search_keyword) | Q(last_name__icontains=search_keyword))
-    id = 0
-    response_data={}
+    #check if it contains space if it does, then it must be a name
+    #or partial name, else it can be a nickname too
+    if (' ' in search_keyword) == True:
+        search_keywords = search_keyword.split(' ')
+        first  = ''.join(search_keywords[0])
+        second = ''.join(search_keywords[1])
+        users = User.objects.filter(( Q(first_name__icontains=first) & Q(last_name__icontains=second) )
+                                  | (Q(first_name__icontains=second) & Q(last_name__icontains=first)))
+    else:
+        users = User.objects.filter(Q(username__icontains=search_keyword)
+                                  | Q(first_name__icontains=search_keyword)
+                                  | Q(last_name__icontains=search_keyword))
+    response_data=[]
     for user in users:
-        response_data[id] ={
-            'username': user.username,
-            'fullname': user.get_full_name(),
-            'imageurl': user.get_profile().profile_pic.url,
-        }
-        id += 1
-    #TODO: better results, rated results by similarity/closeness(same country) -- fuzzywuzzy?
-    return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
+        #check query similarities
+        if fuzz.token_sort_ratio(user.get_full_name(), search_keyword) > fuzz.ratio(user.username, search_keyword):
+            similarity=fuzz.token_sort_ratio(user.get_full_name(), search_keyword)
+        else:
+            similarity=fuzz.ratio(user.username, search_keyword)
+
+        #bonus for living in the same area (country)
+        if request.user.get_profile().countries == user.get_profile().countries:
+            similarity += 10
+        #TODO: remove points like 50 for being yourself.
+
+        response_data +=[
+             (user.username,
+             user.get_full_name(),
+             user.get_profile().profile_pic.url,
+             similarity)
+        ]
+    #sort by similarity
+    sorted_data=sorted(response_data, key=lambda a:a[3], reverse=True)
+    return HttpResponse(simplejson.dumps(sorted_data[:10]), mimetype="application/json")
+
+def User_Profile_Edit(request):
+    #TODO: ability to edit your profile.
+    context= {
+        'text': "hello-bello"
+    }
+    return render_to_response('home.html', context, context_instance=RequestContext(request))
+
 
 def calculate_age(born):
     today = date.today()
