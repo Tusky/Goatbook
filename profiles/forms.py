@@ -11,7 +11,7 @@ class RegistrationForm(ModelForm):
 
     class Meta:
         model = Profile
-        exclude = ('user',)
+        exclude = ('user','friends')
 
     def clean_username(self):
         username = self.cleaned_data['username']

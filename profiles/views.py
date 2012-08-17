@@ -11,7 +11,6 @@ from django.contrib.auth import logout
 from datetime import date
 from django.utils import simplejson
 from fuzzywuzzy import fuzz
-from operator import attrgetter
 
 def User_Profile_Registration(request):
     if request.user.is_authenticated():
@@ -124,7 +123,11 @@ def json_searching(request,search_keyword):
         #bonus for living in the same area (country)
         if request.user.get_profile().countries == user.get_profile().countries:
             similarity += 10
-        #TODO: remove points like 50 for being yourself.
+        #remove 50 points for being yourself and if match is only partial found.
+        if request.user == user and not ( user.get_full_name().lower() ==  search_keyword.lower()
+                                       or user.username.lower() == search_keyword.lower()
+                                       or user.last_name.lower()+' '+user.first_name.lower() == search_keyword.lower() ):
+            similarity -= 50
 
         response_data +=[
              (user.username,

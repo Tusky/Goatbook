@@ -14,7 +14,7 @@ $(document).ready(function(){
                     success:    function(data) {
                         $('#search_results ul li').remove()
                         $.each(data, function(index,value){
-                            $('#search_results ul').append('<li class="searchy"><a href="/profile/'+value[0]+'"><img src="'+value[2]+'">'+value[1]+'</a></li>')
+                            $('#search_results ul').append('<li class="searchy"><a href="/profile/'+value[0]+'"><img src="'+value[2]+'">'+value[1]+' ('+value[3]+')</a></li>')
                             if( index == 0 )
                                 $('#search_results ul li:first').addClass('current');
                         })
@@ -27,7 +27,7 @@ $(document).ready(function(){
         }
     }).blur(function() {
         $(document).unbind('keydown', disableArrowKeys)
-        $('#search_results').hide()
+        $('#search_results').delay(100).hide(100)
     }).focus(function(){
         $(document).bind('keydown', disableArrowKeys)
         $('#search_results').show()

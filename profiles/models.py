@@ -10,6 +10,7 @@ class Profile(models.Model):
     user         = models.OneToOneField(User)
     profile_pic  = models.ImageField(upload_to='tmp/', null=True, blank=True)
     friends      = models.ManyToManyField(User, null=True, blank=True, related_name='uf+')
+    about_me     = models.TextField(_('About Me'), null=True, blank=True)
 
     def __unicode__(self):
         return self.user.get_full_name()
