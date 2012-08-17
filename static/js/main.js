@@ -10,11 +10,11 @@ $(document).ready(function(){
             var len=$(this).val().length;
             if( len > 0){
                 $.ajax({
-                    url:        "/json/"+$(this).val(),
+                    url:"/json/"+$(this).val(),
                     success:    function(data) {
                         $('#search_results ul li').remove()
                         $.each(data, function(index,value){
-                            $('#search_results ul').append('<li class="searchy"><a href="/profile/'+value[0]+'"><img src="'+value[2]+'">'+value[1]+' ('+value[3]+')</a></li>')
+                            $('#search_results ul').append('<li class="searchy"><a href="/profile/'+value[0]+'"><img src="'+value[2]+'">'+value[1]+'</a></li>')
                             if( index == 0 )
                                 $('#search_results ul li:first').addClass('current');
                         })

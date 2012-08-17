@@ -24,7 +24,7 @@ def User_Profile_Registration(request):
             profile.save()
             return HttpResponseRedirect('/')
     else:
-        form = RegistrationForm()
+        form = RegistrationForm(initial={ 'username': 'Testing Stuff', 'password': '10','password1':'randomnumbers12345678910','email': 'okay@ble.com' })
         context = { 'form' : form }
         return render_to_response('register.html', context, context_instance=RequestContext(request))
 
