@@ -7,10 +7,11 @@
     {% if friendable == 0 %}
         <div class="add_friend"><a href="/profile/{{ profiles.username }}/add/">Add Friend</a></div>
     {% else %}
-        {% if not friendable == "none" %}
+        {% if friendable != "none" %}
             <div class="remove_friend"><a href="/profile/{{ profiles.username }}/remove/">Remove Friend</a></div>
         {% else %}
             <div class="edit_yourself"><a href="/edit/">Edit profile</a></div>
+            <div class="friendlist"><a href="{% url friendlist profiles.username %}">Friends</a></div>
         {% endif %}
     {% endif %}
     <div class="user_profile">

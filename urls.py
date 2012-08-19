@@ -16,12 +16,16 @@ urlpatterns = patterns('',
     url(r'^register', 'profiles.views.User_Profile_Registration'),
     url(r'^login', 'profiles.views.User_Profile_Login'),
     url(r'^search/', 'profiles.views.User_Profile_Search'),
-    url(r'^profile/(?P<username>[\w ]{1,50})/add', 'profiles.views.Specific_User_Profile_Add',{}, name="specific_add"),
-    url(r'^profile/(?P<username>[\w ]{1,50})/remove', 'profiles.views.Specific_User_Profile_Remove',{}, name="specific_remove"),
-    url(r'^profile/(?P<username>[\w ]{1,50})', 'profiles.views.Specific_User_Profile_Show',{}, name="specific_url"),
+    url(r'^profile/(?P<username>[\w]+)/add', 'profiles.views.Specific_User_Profile_Add', name="specific_add"),
+    url(r'^profile/(?P<username>[\w]+)/remove', 'profiles.views.Specific_User_Profile_Remove', name="specific_remove"),
+    url(r'^profile/(?P<username>[\w]+)', 'profiles.views.Specific_User_Profile_Show', name="specific_url"),
     url(r'^profile/$', 'profiles.views.User_Profile_Show'),
     url(r'^edit/$', 'profiles.views.User_Profile_Edit'),
-    url(r'^json/(?P<search_keyword>[a-zA-Z ]+)', 'profiles.views.json_searching'),
+    url(r'^friends/(?P<username>[\w]+)', 'profiles.views.User_Profile_Friends', name="friendlist"),
+    url(r'^json/(?P<search_keyword>[\w ]+)', 'profiles.views.json_searching'),
+
+    url(r'^chat/(?P<username>[\w]+)', 'messages.views.Chat_With'),
+
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
 

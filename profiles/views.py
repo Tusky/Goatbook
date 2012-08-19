@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from profiles.forms import RegistrationForm, LoginForm
+from profiles.forms import *
 from profiles.models import Profile
 from django.contrib.auth import logout
 from datetime import date
@@ -139,13 +139,44 @@ def json_searching(request,search_keyword):
     sorted_data=sorted(response_data, key=lambda a:a[3], reverse=True)
     return HttpResponse(simplejson.dumps(sorted_data[:10]), mimetype="application/json")
 
+@login_required
 def User_Profile_Edit(request):
     #TODO: ability to edit your profile.
-    context= {
-        'text': "hello-bello"
-    }
-    return render_to_response('home.html', context, context_instance=RequestContext(request))
+    if request.method == 'POST':
+        form = EditForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['profile_pic'])
+            member = request.user.profile
+            member.birth_date   = form.cleaned_data['birth_date']
+            member.countries    = form.cleaned_data['countries']
+            member.about_me     = form.cleaned_data['about_me']
+            member.profile_pic  = form.cleaned_data['profile_pic']
+            member.save();
+        return render_to_response('edit.html', {}, context_instance=RequestContext(request))
+    else:
+        member = request.user.get_profile()
+        data = {
+            'birth_date': member.birth_date,
+            'profile_pic': member.profile_pic,
+            'countries': member.countries,
+            'about_me': member.about_me
+        }
+        form = EditForm(initial=data)
+        context= {
+            'form': form
+        }
+        return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
+@login_required
+def User_Profile_Friends(request, username=""):
+    member = User.objects.get(username = username)
+    friends = member.get_profile().friends
+
+    context= {
+        'friends': friends,
+        'member': member,
+    }
+    return render_to_response('friends.html', context, context_instance=RequestContext(request))
 
 def calculate_age(born):
     today = date.today()
@@ -157,3 +188,8 @@ def calculate_age(born):
         return today.year - born.year - 1
     else:
         return today.year - born.year
+
+def handle_uploaded_file(f):
+    with open('media/tmp/'+f.name, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)

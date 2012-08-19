@@ -36,3 +36,49 @@
 .smaller{
   font-size: 50%;
 }
+
+h1{
+  font-size: 18px;
+  color: darken($site_color_scheme, 10);
+  a{
+    @extend h1;
+    text-decoration: none;
+    color: $link_color;
+  }
+}
+
+.friend{
+  @extend .user_profile;
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  height: 140px;
+}
+
+.chat{
+  height: 50px;
+  width: 600px;
+  .picture{
+    float: left;
+    padding: 0 3px;
+    margin: 0 2px;
+  }
+  .details{
+    .name{
+      a{
+        color: blue;
+        font-weight: bold;
+        text-decoration: none;
+      }
+    }
+    .date{
+      float: right;
+    }
+    .message{
+      p{
+
+      }
+    }
+  }
+
+}

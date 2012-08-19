@@ -27,8 +27,11 @@ class RegistrationForm(ModelForm):
         return self.cleaned_data
 
 class LoginForm(forms.Form):
-    username        = forms.CharField(label=(u'Username'))
-    password        = forms.CharField(label=(u'Password'), widget=forms.PasswordInput(render_value=False))
+    username        = forms.CharField(label=(u'Username'), widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    password        = forms.CharField(label=(u'Password'), widget=forms.PasswordInput(render_value=False,attrs={'placeholder': 'Password'}))
 
-
+class EditForm(ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ('user','friends')
 

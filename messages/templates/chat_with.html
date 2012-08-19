@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load thumbnail humanize %}
+{% block title %}Chat{% endblock title %}
+
+{% block content %}
+    {% for message in messagesList %}
+        <div class="chat">
+            <div class="picture">
+                {% thumbnail message.sender.get_profile.profile_pic "40x40" as picture %}
+                    <img src="{{ picture.url }}" />
+                {% endthumbnail %}
+            </div>
+            <div class="details">
+                <div class="date"><p title="{{ message.sent }}">{{ message.sent|naturaltime }}</p></div>
+                <div class="name"><a href="{% url specific_url message.sender.username %}">{{ message.sender.get_full_name }}</a></div>
+                <div class="message"><p>{{ message.message }}</p></div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}
