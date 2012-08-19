@@ -6,13 +6,17 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from messages.models import Message
+from django.core.exceptions import ObjectDoesNotExist
 from datetime import date
 from django.utils import simplejson
 
 @login_required
 def Chat_With(request, username):
-    partner = User.objects.get(username=username)
-    messages = Message.objects.filter( ( Q(sender=request.user) & Q(receipt=partner) ) | ( Q(sender=partner) & Q(receipt=request.user) ) ).order_by("sent")
+    try:
+        partner = User.objects.get(username=username)
+        messages = Message.objects.filter( ( Q(sender=request.user) & Q(receipt=partner) ) | ( Q(sender=partner) & Q(receipt=request.user) ) ).order_by("sent")
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/profile/')
 
     context= {
         'messagesList': messages,

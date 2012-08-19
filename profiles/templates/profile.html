@@ -8,6 +8,7 @@
         <div class="add_friend"><a href="/profile/{{ profiles.username }}/add/">Add Friend</a></div>
     {% else %}
         {% if friendable != "none" %}
+            <div class="chat_with_friend"><a href="/chat/{{ profiles.username }}">Chat</a></div>
             <div class="remove_friend"><a href="/profile/{{ profiles.username }}/remove/">Remove Friend</a></div>
         {% else %}
             <div class="edit_yourself"><a href="/edit/">Edit profile</a></div>
