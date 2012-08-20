@@ -178,6 +178,9 @@ def User_Profile_Friends(request, username=""):
     }
     return render_to_response('friends.html', context, context_instance=RequestContext(request))
 
+def error_404(request):
+    return render_to_response('404.html')
+
 def calculate_age(born):
     today = date.today()
     try:

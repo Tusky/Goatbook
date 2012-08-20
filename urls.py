@@ -6,9 +6,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'Goatbook.views.home', name='home'),
-    # url(r'^Goatbook/', include('Goatbook.foo.urls')),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'homepage.views.HomePage'),
@@ -24,9 +21,11 @@ urlpatterns = patterns('',
     url(r'^friends/(?P<username>[\w]+)', 'profiles.views.User_Profile_Friends', name="friendlist"),
     url(r'^json/(?P<search_keyword>[\w ]+)', 'profiles.views.json_searching'),
 
+    url(r'^chat/(?P<username>[\w]+)/json/last', 'messages.views.Chat_Last_Item_PK'),
+    url(r'^chat/(?P<username>[\w]+)/json/(?P<message_id>[0-9]+)', 'messages.views.Chat_Specific_Message'),
+    url(r'^chat/(?P<username>[\w]+)/json', 'messages.views.Chat_With_JSON'),
     url(r'^chat/(?P<username>[\w]+)', 'messages.views.Chat_With'),
 
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
-
 urlpatterns += staticfiles_urlpatterns()

@@ -1,69 +1,71 @@
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from messages.models import Message
+from messages.forms import Chat
+from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
-from datetime import date
 from django.utils import simplejson
+from django.core.urlresolvers import reverse
 
 @login_required
 def Chat_With(request, username):
     try:
         partner = User.objects.get(username=username)
-        messages = Message.objects.filter( ( Q(sender=request.user) & Q(receipt=partner) ) | ( Q(sender=partner) & Q(receipt=request.user) ) ).order_by("sent")
+        if request.method == 'POST':
+            form = Chat(request.POST)
+            if form.is_valid():
+                message = Message.objects.create(sender=request.user,receipt=partner,message=form.cleaned_data['message'])
+                message.save()
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('/profile/')
+        raise Http404
 
+    form = Chat()
     context= {
-        'messagesList': messages,
-    }
+        'form': form,
+        'partner': partner,
+        }
     return render_to_response('chat_with.html', context, context_instance=RequestContext(request))
 
+def Chat_With_JSON(request, username):
+    messageList = []
+    try:
+        partner = User.objects.get(username=username)
+        messages = Message.objects.filter( ( Q(sender=request.user) & Q(receipt=partner) ) | ( Q(sender=partner) & Q(receipt=request.user) ) ).order_by("sent").reverse()[:10]
 
+        for message in messages:
+            if type(message.seen).__name__ == 'datetime':
+                seen = datetime.strftime(message.seen, "%Y-%m-%d %H:%M:%S")
+            else:
+                seen = "not"
+            messageList += [
+                (message.pk, message.sender.get_full_name(),message.sender.get_profile().profile_pic.url, reverse("specific_url", args={message.receipt.username}), message.message, datetime.strftime(message.sent, "%Y-%m-%d %H:%M:%S"), seen ),
+            ]
+        return HttpResponse(simplejson.dumps(messageList), mimetype="application/json")
+    except ObjectDoesNotExist:
+        raise Http404
 
-def pretty_date(time=False):
-    """
-    Get a datetime object or a int() Epoch timestamp and return a
-    pretty string like 'an hour ago', 'Yesterday', '3 months ago',
-    'just now', etc
-    """
-    from datetime import datetime
-    now = datetime.now()
-    if type(time) is int:
-        diff = now - datetime.fromtimestamp(time)
-    elif isinstance(time,datetime):
-        diff = now - time
-    elif not time:
-        diff = now - now
-    second_diff = diff.seconds
-    day_diff = diff.days
+def Chat_Last_Item_PK(request, username):
+    try:
+        partner = User.objects.get(username=username)
+        messages = Message.objects.filter( ( Q(sender=request.user) & Q(receipt=partner) ) | ( Q(sender=partner) & Q(receipt=request.user) ) ).latest("pk")
+        lastmessage = (messages.pk, datetime.strftime(messages.sent, "%Y-%m-%d %H:%M:%S"))
+        return HttpResponse(simplejson.dumps(lastmessage), mimetype="application/json")
+    except ObjectDoesNotExist:
+        raise Http404
 
-    if day_diff < 0:
-        return ''
-
-    if day_diff == 0:
-        if second_diff < 10:
-            return "just now"
-        if second_diff < 60:
-            return str(second_diff) + " seconds ago"
-        if second_diff < 120:
-            return  "a minute ago"
-        if second_diff < 3600:
-            return str( second_diff / 60 ) + " minutes ago"
-        if second_diff < 7200:
-            return "an hour ago"
-        if second_diff < 86400:
-            return str( second_diff / 3600 ) + " hours ago"
-    if day_diff == 1:
-        return "Yesterday"
-    if day_diff < 7:
-        return str(day_diff) + " days ago"
-    if day_diff < 31:
-        return str(day_diff/7) + " weeks ago"
-    if day_diff < 365:
-        return str(day_diff/30) + " months ago"
-    return str(day_diff/365) + " years ago"
+def Chat_Specific_Message(request, username, message_id):
+    try:
+        partner = User.objects.get(username=username)
+        message = Message.objects.get( Q(pk=message_id) & ((Q(sender=request.user)&Q(receipt=partner)) | (Q(sender=partner)&Q(receipt=request.user))) )
+        if type(message.seen).__name__ == 'datetime':
+            seen = datetime.strftime(message.seen, "%Y-%m-%d %H:%M:%S")
+        else:
+            seen = "not"
+        the_message = (message.pk, message.sender.get_full_name(),message.sender.get_profile().profile_pic.url, reverse("specific_url", args={message.receipt.username}), message.message, datetime.strftime(message.sent, "%Y-%m-%d %H:%M:%S"), seen )
+        return HttpResponse(simplejson.dumps(the_message), mimetype="application/json")
+    except ObjectDoesNotExist:
+        raise Http404

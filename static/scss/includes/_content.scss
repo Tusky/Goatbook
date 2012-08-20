@@ -56,29 +56,48 @@ h1{
 }
 
 .chat{
-  height: 50px;
-  width: 600px;
-  .picture{
-    float: left;
-    padding: 0 3px;
-    margin: 0 2px;
-  }
-  .details{
-    .name{
-      a{
-        color: blue;
-        font-weight: bold;
-        text-decoration: none;
+  height: 400px;
+  overflow-y: scroll;
+  li{
+    height: 50px;
+    width: 600px;
+    .picture{
+      float: left;
+      padding: 0 3px;
+      margin: 0 2px;
+      img{
+        height: 40px;
+        width: 40px;
       }
     }
-    .date{
-      float: right;
-    }
-    .message{
-      p{
+    .details{
+      .name{
+        a{
+          color: blue;
+          font-weight: bold;
+          text-decoration: none;
+        }
+      }
+      .date{
+        float: right;
+      }
+      .message{
+        p{
 
+        }
       }
     }
   }
+}
 
+#id_message{
+  height: 20px;
+  width: 700px;
+  float: left;
+  border: 1px solid #ccc;
+}
+
+#chat_submit{
+  width: 50px;
+  height: 27px;
 }

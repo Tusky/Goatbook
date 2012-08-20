@@ -4,7 +4,7 @@ def rel(*x):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
 
 DEBUG = True
-THUMBNAIL_DEBUG = TEMPLATE_DEBUG = DEBUG
+THUMBNAIL_DEBUG = TEMPLATE_DEBUG = True
 
 ADMINS = (
     ('Richard Hajdu', 'tuskone16@gmail.com'),
