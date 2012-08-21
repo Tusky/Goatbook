@@ -20,6 +20,7 @@ def Chat_With(request, username):
             if form.is_valid():
                 message = Message.objects.create(sender=request.user,receipt=partner,message=form.cleaned_data['message'])
                 message.save()
+            return HttpResponse(simplejson.dumps({'response' : "ok"}), mimetype="application/json")
     except ObjectDoesNotExist:
         raise Http404
 

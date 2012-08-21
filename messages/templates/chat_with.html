@@ -36,6 +36,7 @@
         $('#id_message').autosize();
         var last_date = new Date(0),
             id = 1,
+            last_pk = 1;
             elements = new Array();
         $.ajax({
             url:"/chat/{{ partner.username }}/json",
@@ -76,8 +77,9 @@
                 timeout: 1000,
                 success: function(data) {
                     date = new Date(data[1]);
-                    if(date > last_date){
+                    if(date > last_date && data[0] != last_pk){
                         last_date = date
+                        last_pk = data[0]
                         $.ajax({
                             url: "/chat/{{ partner.username }}/json/"+data[0],
                             success: function(data){
@@ -87,7 +89,7 @@
                             }
                         })
                     }
-                },
+                }
             })
         }
 
