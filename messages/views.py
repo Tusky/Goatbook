@@ -92,5 +92,5 @@ def Chat_Last_Seen(request, username):
         message = Message.objects.filter( Q(sender=request.user) & Q(receipt=partner) ).exclude(seen=None)
         return HttpResponse(simplejson.dumps({"date": datetime.strftime(message.latest('seen').seen, "%Y-%m-%d %H:%M:%S")}), mimetype="application/json")
     except ObjectDoesNotExist:
-        raise Http404
+        return HttpResponse(simplejson.dumps({"date": "1989-06-13 17:15:30"}), mimetype="application/json")
 
