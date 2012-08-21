@@ -70,3 +70,14 @@ def Chat_Specific_Message(request, username, message_id):
         return HttpResponse(simplejson.dumps(the_message), mimetype="application/json")
     except ObjectDoesNotExist:
         raise Http404
+
+def Chat_Seen(request, username):
+    try:
+        partner = User.objects.get(username=username)
+        messages = Message.objects.filter( Q(seen=None) & (Q(sender=partner)&Q(receipt=request.user)) )
+        for message in messages:
+            message.seen=datetime.now()
+            message.save()
+        return HttpResponse(simplejson.dumps({"response": "ok"}), mimetype="application/json")
+    except ObjectDoesNotExist:
+        raise Http404

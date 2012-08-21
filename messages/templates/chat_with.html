@@ -91,6 +91,7 @@
                     }
                 }
             })
+            seen_chat()
         }
 
         //Send a message
@@ -105,6 +106,11 @@
         return '<li id="message-'+id+'"><div class="picture"><img src="'+image_url+'" /></div><div class="details">' +
                 '<div class="date"><p title="'+sent+'">'+sent+'</p></div><div class="name"><a href="'+profile_url+'">'+name+'</a>' +
                 '</div><div class="message"><p>'+message+'</p></div></div></li>';
+    }
+
+    //Seen messages.
+    function seen_chat(){
+        $.get("/chat/{{ partner.username }}/json/seen");
     }
 </script>
 {% endblock js %}

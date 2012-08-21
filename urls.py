@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^json/(?P<search_keyword>[\w ]+)', 'profiles.views.json_searching'),
 
     url(r'^chat/(?P<username>[\w]+)/json/last', 'messages.views.Chat_Last_Item_PK'),
+    url(r'^chat/(?P<username>[\w]+)/json/seen', 'messages.views.Chat_Seen'),
     url(r'^chat/(?P<username>[\w]+)/json/(?P<message_id>[0-9]+)', 'messages.views.Chat_Specific_Message'),
     url(r'^chat/(?P<username>[\w]+)/json', 'messages.views.Chat_With_JSON'),
     url(r'^chat/(?P<username>[\w]+)', 'messages.views.Chat_With'),
