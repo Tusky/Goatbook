@@ -60,7 +60,7 @@ h1{
   overflow-y: scroll;
   li{
     height: 50px;
-    width: 600px;
+    width: 100%;
     .picture{
       float: left;
       padding: 0 3px;
@@ -100,4 +100,8 @@ h1{
 #chat_submit{
   width: 50px;
   height: 27px;
+}
+
+.not_seen{
+  background-color: #e3e3e3;
 }

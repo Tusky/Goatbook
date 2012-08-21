@@ -6,3 +6,5 @@ goatbook.db
 local_settings.py
 virtualenv
 *cache*
+chat.js
+main.js

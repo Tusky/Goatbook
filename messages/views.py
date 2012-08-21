@@ -31,6 +31,7 @@ def Chat_With(request, username):
         }
     return render_to_response('chat_with.html', context, context_instance=RequestContext(request))
 
+@login_required
 def Chat_With_JSON(request, username):
     messageList = []
     try:
@@ -49,6 +50,7 @@ def Chat_With_JSON(request, username):
     except ObjectDoesNotExist:
         raise Http404
 
+@login_required
 def Chat_Last_Item_PK(request, username):
     try:
         partner = User.objects.get(username=username)
@@ -58,6 +60,7 @@ def Chat_Last_Item_PK(request, username):
     except ObjectDoesNotExist:
         raise Http404
 
+@login_required
 def Chat_Specific_Message(request, username, message_id):
     try:
         partner = User.objects.get(username=username)
@@ -71,6 +74,7 @@ def Chat_Specific_Message(request, username, message_id):
     except ObjectDoesNotExist:
         raise Http404
 
+@login_required
 def Chat_Seen(request, username):
     try:
         partner = User.objects.get(username=username)
@@ -81,3 +85,12 @@ def Chat_Seen(request, username):
         return HttpResponse(simplejson.dumps({"response": "ok"}), mimetype="application/json")
     except ObjectDoesNotExist:
         raise Http404
+
+def Chat_Last_Seen(request, username):
+    try:
+        partner = User.objects.get(username=username)
+        message = Message.objects.filter( Q(sender=request.user) & Q(receipt=partner) ).exclude(seen=None)
+        return HttpResponse(simplejson.dumps({"date": datetime.strftime(message.latest('seen').seen, "%Y-%m-%d %H:%M:%S")}), mimetype="application/json")
+    except ObjectDoesNotExist:
+        raise Http404
+

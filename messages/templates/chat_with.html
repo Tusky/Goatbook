@@ -23,104 +23,11 @@
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Send" id="chat_submit" />
+        <input type="hidden" value="{{ partner.username }}" id="partner_name" />
     </form>
 {% endblock content %}
 
 {% block js %}
 <script src="{{ STATIC_URL }}js/jquery.autosize-min.js"></script>
-<script>
-    /*
-    * Chat ajax stuff
-    */
-    $(document).ready(function(){
-        $('#id_message').autosize();
-        var last_date = new Date(0),
-            id = 1,
-            last_pk = 1;
-            elements = new Array();
-        $.ajax({
-            url:"/chat/{{ partner.username }}/json",
-            success: function(data) {
-                $.each(data, function(index,value){
-                    elements.push(display_list_element(id,value[1],value[2],value[3],value[4],value[5],value[6]));
-                    id++;
-                    forCompare = new Date(value[5]);
-                    if(last_date < forCompare)
-                        last_date = forCompare
-                })
-                for(var i=elements.length; elements.length -10 <= i; i--){
-                    $('ul.chat').append(elements[i])
-                }
-                $("#message-1")[0].scrollIntoView(true);
-                //Query for new messages
-                get_message()
-            }
-        })
-
-        $('#chat_submit').click(function(event){
-            get_message();
-            send_message(event);
-        })
-
-        $('#id_message').keydown(function(event){
-            if(event.keyCode == 13 && event.shiftKey == false){
-                send_message(event)
-                get_message();
-            }
-        })
-
-
-        //Gets new messages
-        function get_message(){
-            $.ajax({
-                url:"/chat/{{ partner.username }}/json/last",
-                timeout: 1000,
-                success: function(data) {
-                    date = new Date(data[1]);
-                    if(date > last_date && data[0] != last_pk){
-                        last_date = date
-                        last_pk = data[0]
-                        $.ajax({
-                            url: "/chat/{{ partner.username }}/json/"+data[0],
-                            success: function(data){
-                                $('ul.chat').append(display_list_element(id,data[1],data[2],data[3],data[4],data[5],data[6]))
-                                $("#message-"+id)[0].scrollIntoView(true);
-                                id++;
-                            }
-                        })
-                    }
-                }
-            })
-            seen_chat()
-        }
-
-        //Send a message
-        function send_message(ev){
-            ev.preventDefault();
-            $.post("", { message: $('#id_message').val(), csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()  } );
-            $('#id_message').val('');
-        }
-    })
-    //Display a message.
-    function display_list_element(id, name, image_url, profile_url, message, sent, seen){
-        return '<li id="message-'+id+'"><div class="picture"><img src="'+image_url+'" /></div><div class="details">' +
-                '<div class="date"><p title="'+sent+'">'+sent+'</p></div><div class="name"><a href="'+profile_url+'">'+name+'</a>' +
-                '</div><div class="message"><p>'+message+'</p></div></div></li>';
-    }
-
-    //Seen messages.
-    function seen_chat(){
-        $.get("/chat/{{ partner.username }}/json/seen");
-    }
-</script>
+<script src="{{ STATIC_URL }}js/chat.js"></script>
 {% endblock js %}
-
-
-{#if(data > last_shown){#}
-{#$.ajax({#}
-{#url: "/chat/{{ partner.username }}/json/"+(last_shown+1),#}
-{#success: function(data) {#}
-{#console.log(data)#}
-{#}#}
-{#})#}
-{#}#}
