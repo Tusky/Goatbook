@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}X's profile{% endblock title %}
+
+{% block content %}
+    <ul id="posts">
+    {% for post in posts %}
+        <li>
+            <div class="post">
+                {% thumbnail post.poster.get_profile.profile_pic "60x60" as profile_picture %}
+                    <div class="image_container">
+                        <img src="{{ profile_picture.url }}" />
+                    </div>
+                    <div class="details">
+                        {{ post.poster.get_full_name }}
+                        <p>{{ post.post }}</p>
+                        <span>{{ post.posted_on }}</span>
+                    </div>
+                {% endthumbnail %}
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock content %}

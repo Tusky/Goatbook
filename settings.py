@@ -128,6 +128,7 @@ INSTALLED_APPS = (
 
     'profiles',
     'messages',
+    'wall',
 
     'south',
 )

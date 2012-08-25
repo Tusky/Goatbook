@@ -105,3 +105,22 @@ h1{
 .not_seen{
   background-color: #e3e3e3;
 }
+
+.post{
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 5px black;
+  .image_container{
+    display: table-cell;
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    img{
+    }
+  }
+  .details{
+    display: table-cell;
+  }
+}
+
+

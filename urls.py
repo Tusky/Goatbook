@@ -8,7 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'homepage.views.HomePage'),
+    url(r'^$', 'wall.views.Wall'),
     url(r'^logout', 'profiles.views.User_Profile_Logout'),
     url(r'^register', 'profiles.views.User_Profile_Registration'),
     url(r'^login', 'profiles.views.User_Profile_Login'),
