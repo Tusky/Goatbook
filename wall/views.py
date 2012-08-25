@@ -2,7 +2,6 @@ from wall.models import WallPost
 from profiles.models import Profile
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.db.models import Q
 
 def Wall(request):
     posts = WallPost.objects.filter(poster=request.user)

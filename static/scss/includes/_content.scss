@@ -71,13 +71,6 @@ h1{
       }
     }
     .details{
-      .name{
-        a{
-          color: blue;
-          font-weight: bold;
-          text-decoration: none;
-        }
-      }
       .date{
         float: right;
       }
@@ -108,14 +101,16 @@ h1{
 
 .post{
   margin-bottom: 15px;
-  border: 1px solid #ccc;
-  box-shadow: 0px 0px 5px black;
+  border-top: 1px solid #ccc;
+  padding: 10px 0 0 10px;
+  width: 600px;
   .image_container{
     display: table-cell;
     vertical-align: middle;
     width: 60px;
     height: 60px;
     img{
+      margin-right: 10px;
     }
   }
   .details{
@@ -123,4 +118,54 @@ h1{
   }
 }
 
+.name{
+  a{
+    color: blue;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16px;
+  }
+}
 
+p.the_post{
+  padding: 10px 0;
+  font: 12px 'lucida grande',tahoma,verdana,arial,sans-serif;
+}
+
+.options{
+  margin-left: 70px;
+  .like{
+    display: inline-block;
+    margin-right: 5px;
+    &:after{
+      margin-left: 5px;
+      content: "\00B7";
+    }
+    img{
+
+    }
+    span{
+
+    }
+  }
+  .dislike{
+    display: inline-block;
+    margin-right: 5px;
+    &:after{
+      margin-left: 5px;
+      content: "\00B7";
+    }
+    img{
+
+    }
+    span{
+
+    }
+  }
+  .date{
+    display: inline-block;
+    span{
+
+    }
+  }
+}

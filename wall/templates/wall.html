@@ -7,18 +7,38 @@
     {% for post in posts %}
         <li>
             <div class="post">
-                {% thumbnail post.poster.get_profile.profile_pic "60x60" as profile_picture %}
                     <div class="image_container">
-                        <img src="{{ profile_picture.url }}" />
+                        {% thumbnail post.poster.get_profile.profile_pic "60x60" as profile_picture %}
+                            <a href="{% url specific_url post.poster.username %}"><img src="{{ profile_picture.url }}" /></a>
+                        {% endthumbnail %}
                     </div>
-                    <div class="details">
-                        {{ post.poster.get_full_name }}
-                        <p>{{ post.post }}</p>
-                        <span>{{ post.posted_on }}</span>
+                <div class="details">
+                    <span class="name"><a href="{% url specific_url post.poster.username %}">{{ post.poster.get_full_name }}</a></span>
+                    <p class="the_post">{{ post.post }}</p>
+                </div>
+                <div class="options">
+                    <div class="like">
+                        <img src="{{ STATIC_URL }}images/like.png" /> <span>Liked</span>
                     </div>
-                {% endthumbnail %}
+                    <div class="dislike">
+                        <img src="{{ STATIC_URL }}images/dislike.png" /> <span>Disliked</span>
+                    </div>
+                    <div class="date">
+                        <abbr class="timeago" title="{{ post.posted_on|date:"Y-m-d\TH:m:s\Z" }}">{{ post.posted_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr>
+                    </div>
+                </div>
             </div>
         </li>
     {% endfor %}
     </ul>
+
+<script type="text/javascript">
+    $().ready(function(){
+        $('abbr.timeago').timeago();
+    })
+</script>
 {% endblock content %}
+
+{% block js %}
+<script src="{{ STATIC_URL }}js/timeago.min.js"></script>
+{% endblock js %}

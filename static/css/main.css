@@ -209,10 +209,6 @@ h1, h1 a {
       .chat li .picture img {
         height: 40px;
         width: 40px; }
-    .chat li .details .name a {
-      color: blue;
-      font-weight: bold;
-      text-decoration: none; }
     .chat li .details .date {
       float: right; }
 
@@ -231,14 +227,44 @@ h1, h1 a {
 
 .post {
   margin-bottom: 15px;
-  border: 1px solid #ccc;
-  box-shadow: 0px 0px 5px black; }
+  border-top: 1px solid #ccc;
+  padding: 10px 0 0 10px;
+  width: 600px; }
   .post .image_container {
     display: table-cell;
     vertical-align: middle;
     width: 60px;
     height: 60px; }
+    .post .image_container img {
+      margin-right: 10px; }
   .post .details {
     display: table-cell; }
+
+.name a {
+  color: blue;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 16px; }
+
+p.the_post {
+  padding: 10px 0;
+  font: 12px 'lucida grande',tahoma,verdana,arial,sans-serif; }
+
+.options {
+  margin-left: 70px; }
+  .options .like {
+    display: inline-block;
+    margin-right: 5px; }
+    .options .like:after {
+      margin-left: 5px;
+      content: "\00B7"; }
+  .options .dislike {
+    display: inline-block;
+    margin-right: 5px; }
+    .options .dislike:after {
+      margin-left: 5px;
+      content: "\00B7"; }
+  .options .date {
+    display: inline-block; }
 
 /* _footer.scss */
