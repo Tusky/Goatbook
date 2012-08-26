@@ -16,17 +16,31 @@ def User_Profile_Registration(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect('/')
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
+            handle_uploaded_file(request.FILES['profile_pic'])
             user = User.objects.create_user(username=form.cleaned_data['username'], email = form.cleaned_data['email'], password = form.cleaned_data['password'])
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name=form.cleaned_data['last_name']
             user.save()
-            profile = Profile(user = user, first_name = form.cleaned_data['first_name'], last_name = form.cleaned_data['last_name'], birth_date = form.cleaned_data['birth_date'])
+            profile = Profile(user = user, countries=form.cleaned_data['countries'], about_me = form.cleaned_data['about_me'], birth_date = form.cleaned_data['birth_date'])
+            profile.profile_pic=form.cleaned_data['profile_pic']
             profile.save()
-            return HttpResponseRedirect('/')
+            registredUser = authenticate(username = form.cleaned_data['username'], password= form.cleaned_data['password'])
+            if registredUser is not None:
+                login(request, registredUser)
+                return HttpResponseRedirect('/')
+
+            else:
+                return HttpResponseRedirect('/registered')
     else:
-        form = RegistrationForm(initial={ 'username': 'Testing Stuff', 'password': '10','password1':'randomnumbers12345678910','email': 'okay@ble.com' })
+        form = RegistrationForm()
         context = { 'form' : form }
         return render_to_response('register.html', context, context_instance=RequestContext(request))
+    return HttpResponseRedirect('/')
+
+def User_Profile_Registration_Finished(request):
+    return render_to_response('registered.html', context_instance=RequestContext(request))
 
 def User_Profile_Login(request):
     if request.user.is_authenticated():

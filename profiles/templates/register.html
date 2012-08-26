@@ -3,5 +3,21 @@
 {% block title %}Register stuff{% endblock title %}
 
 {% block content %}
-    {{ form.as_p }}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Register" />
+    </form>
 {% endblock content %}
+
+{% block js %}
+<script type="text/javascript">
+    $().ready(function(){
+        $("#id_birth_date").datepicker({
+                                            dateFormat: "yy-mm-dd",
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            yearRange: "1900:"});
+    })
+</script>
+{% endblock js %}

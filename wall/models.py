@@ -24,4 +24,5 @@ class WallComment(models.Model):
 
     def __unicode__(self):
         return self.commenter.get_full_name() + " at " + str(self.wallpost)
+
 admin.site.register(WallComment)

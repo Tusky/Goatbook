@@ -212,11 +212,15 @@ h1, h1 a {
     .chat li .details .date {
       float: right; }
 
-#id_message {
+#id_message, #id_wallpost {
+  resize: none;
   height: 20px;
   width: 700px;
-  float: left;
   border: 1px solid #ccc; }
+
+#id_wallpost {
+  width: 400px;
+  margin-bottom: 10px; }
 
 #chat_submit {
   width: 50px;
@@ -253,19 +257,34 @@ p.the_post {
 
 .options {
   margin-left: 70px; }
-  .options .like {
+  .options .like, .options .dislike {
     display: inline-block;
     margin-right: 5px; }
-    .options .like:after {
+    .options .like:after, .options .dislike:after {
       margin-left: 5px;
       content: "\00B7"; }
-  .options .dislike {
-    display: inline-block;
-    margin-right: 5px; }
-    .options .dislike:after {
-      margin-left: 5px;
-      content: "\00B7"; }
+    .options .like span, .options .dislike span {
+      color: #6B84B4;
+      cursor: pointer; }
+      .options .like span:hover, .options .dislike span:hover {
+        text-decoration: underline; }
   .options .date {
     display: inline-block; }
+
+.opinion {
+  margin-bottom: 10px; }
+
+span.like, .options span.dislike, span.dislike {
+  color: blue;
+  display: block;
+  line-height: 16px; }
+  span.like img, .options span.dislike img, span.dislike img {
+    position: relative;
+    top: 4px; }
+
+span.dislike {
+  color: red; }
+  span.dislike img {
+    top: 6px; }
 
 /* _footer.scss */

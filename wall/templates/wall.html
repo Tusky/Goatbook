@@ -3,6 +3,9 @@
 {% block title %}X's profile{% endblock title %}
 
 {% block content %}
+    <form action="" method="POST">
+        {{ form.as_p }}
+    </form>
     <ul id="posts">
     {% for post in posts %}
         <li>
@@ -15,13 +18,34 @@
                 <div class="details">
                     <span class="name"><a href="{% url specific_url post.poster.username %}">{{ post.poster.get_full_name }}</a></span>
                     <p class="the_post">{{ post.post }}</p>
+                    <div class="opinion">
+                        {% if post.liked_by.all|length > 0 %}
+                            <span class="like"><img src="{{ STATIC_URL }}images/like.png" /> {% for like in post.liked_by.all|slice:sliceUp %}
+                                {{ like.get_full_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            {% if post.liked_by.all|slice:sliceDown|length > 0 %}
+                            and <abbr title="{% for like in post.liked_by.all|slice:sliceDown %}{{ like.get_full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}">{{ post.liked_by.all|slice:sliceDown|length }} Other{% if post.liked_by.all|slice:sliceDown|length > 1%}s{% endif %}</abbr>
+                            {% endif %}
+                            like this.</span>
+                        {% endif %}
+
+                        {% if post.hated_by.all|length > 0 %}
+                            <span class="dislike"><img src="{{ STATIC_URL }}images/dislike.png" />{% for dislike in post.hated_by.all|slice:sliceUp %}
+                                {{ dislike.get_full_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            {% if post.hated_by.all|slice:sliceDown|length > 0 %}
+                                and <abbr title="{% for dislike in post.hated_by.all|slice:sliceDown %}{{ dislike.get_full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}">{{ post.hated_by.all|slice:sliceDown|length }} Other{% if post.hated_by.all|slice:sliceDown|length > 1%}s{% endif %}</abbr>
+                            {% endif %}
+                            dislike this.</span>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="options">
                     <div class="like">
-                        <img src="{{ STATIC_URL }}images/like.png" /> <span>Liked</span>
+                        <span>Like</span>
                     </div>
                     <div class="dislike">
-                        <img src="{{ STATIC_URL }}images/dislike.png" /> <span>Disliked</span>
+                        <span>Dislike</span>
                     </div>
                     <div class="date">
                         <abbr class="timeago" title="{{ post.posted_on|date:"Y-m-d\TH:m:s\Z" }}">{{ post.posted_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr>
@@ -40,5 +64,6 @@
 {% endblock content %}
 
 {% block js %}
+<script src="{{ STATIC_URL }}js/jquery.autosize-min.js"></script>
 <script src="{{ STATIC_URL }}js/timeago.min.js"></script>
 {% endblock js %}

@@ -84,10 +84,16 @@ h1{
 }
 
 #id_message{
+  resize: none;
   height: 20px;
   width: 700px;
-  float: left;
   border: 1px solid #ccc;
+}
+
+#id_wallpost{
+  @extend #id_message;
+  width: 400px;
+  margin-bottom: 10px;
 }
 
 #chat_submit{
@@ -143,26 +149,17 @@ p.the_post{
       margin-left: 5px;
       content: "\00B7";
     }
-    img{
-
-    }
     span{
-
+      color: #6B84B4;
+      cursor: pointer;
+      &:hover{
+        text-decoration: underline;
+      }
     }
   }
+
   .dislike{
-    display: inline-block;
-    margin-right: 5px;
-    &:after{
-      margin-left: 5px;
-      content: "\00B7";
-    }
-    img{
-
-    }
-    span{
-
-    }
+    @extend .like;
   }
   .date{
     display: inline-block;
@@ -170,4 +167,26 @@ p.the_post{
 
     }
   }
+}
+
+.opinion{
+  margin-bottom: 10px;
+}
+
+span.like{
+  img{
+    position: relative;
+    top: 4px;
+  }
+  color: blue;
+  display: block;
+  line-height: 16px;
+}
+
+span.dislike{
+  @extend span.like;
+  img{
+    top: 6px;
+  }
+  color: red;
 }
