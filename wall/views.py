@@ -32,7 +32,8 @@ def LikeWallPost(request, pk):
         wallpost = WallPost.objects.get(Q(pk=pk) & Q(liked_by=request.user))
         wallpost.liked_by.remove(request.user)
         wallpost.save()
-        return HttpResponse(simplejson.dumps({"response": "removed"}), mimetype="application/json")
+        liked, disliked=getPostLikesAndDislikes(pk)
+        return HttpResponse(simplejson.dumps({"response": "removed", "liked_by": liked, "hated_by": disliked}), mimetype="application/json")
     except ObjectDoesNotExist:
         try:
             #todo: check for if you can even see the post/have permission to see it.
@@ -40,7 +41,8 @@ def LikeWallPost(request, pk):
             wallpost.liked_by.add(request.user)
             wallpost.hated_by.remove(request.user)
             wallpost.save()
-            return HttpResponse(simplejson.dumps({"response": "liked"}), mimetype="application/json")
+            liked, disliked=getPostLikesAndDislikes(pk)
+            return HttpResponse(simplejson.dumps({"response": "liked", "liked_by": liked, "hated_by": disliked}), mimetype="application/json")
         except ObjectDoesNotExist:
             return HttpResponse(simplejson.dumps({"response": "false"}), mimetype="application/json")
 
@@ -50,7 +52,8 @@ def DislikeWallPost(request, pk):
         wallpost = WallPost.objects.get(Q(pk=pk) & Q(hated_by=request.user))
         wallpost.hated_by.remove(request.user)
         wallpost.save()
-        return HttpResponse(simplejson.dumps({"response": "removed"}), mimetype="application/json")
+        liked, disliked=getPostLikesAndDislikes(pk)
+        return HttpResponse(simplejson.dumps({"response": "removed", "liked_by": liked, "hated_by": disliked}), mimetype="application/json")
     except ObjectDoesNotExist:
         try:
             #todo: check for if you can even see the post/have permission to see it.
@@ -58,6 +61,28 @@ def DislikeWallPost(request, pk):
             wallpost.hated_by.add(request.user)
             wallpost.liked_by.remove(request.user)
             wallpost.save()
-            return HttpResponse(simplejson.dumps({"response": "disliked"}), mimetype="application/json")
+            liked, disliked=getPostLikesAndDislikes(pk)
+            return HttpResponse(simplejson.dumps({"response": "disliked", "liked_by": liked, "hated_by": disliked}), mimetype="application/json")
         except ObjectDoesNotExist:
             return HttpResponse(simplejson.dumps({"response": "false"}), mimetype="application/json")
+
+
+def getPostLikesAndDislikes(pk):
+    wallpost = WallPost.objects.get(pk=pk)
+    liked_by = wallpost.liked_by.all()
+    hated_by = wallpost.hated_by.all()
+    liked, disliked="", ""
+    i, j=1, 1
+    for likes in liked_by:
+        if i == liked_by.count():
+            liked += likes.get_full_name()
+        else:
+            liked += likes.get_full_name()+","
+        i+=1
+    for dislikes in hated_by:
+        if j == hated_by.count():
+            disliked += dislikes.get_full_name()
+        else:
+            disliked += dislikes.get_full_name()+","
+        j+=1
+    return liked, disliked

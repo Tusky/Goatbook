@@ -29,8 +29,9 @@ urlpatterns = patterns('',
     url(r'^chat/(?P<username>[\w]+)/json', 'messages.views.Chat_With_JSON'),
     url(r'^chat/(?P<username>[\w]+)', 'messages.views.Chat_With'),
 
-    url(r'^like/(?P<pk>[0-9]+)', 'wall.views.LikeWallPost', name="LikeWallPost"),
-    url(r'^dislike/(?P<pk>[0-9]+)', 'wall.views.DislikeWallPost', name="DislikeWallPost"),
+    url(r'^wallpost/(?P<pk>[0-9]+)/like$', 'wall.views.LikeWallPost', name="LikeWallPost"),
+    url(r'^wallpost/(?P<pk>[0-9]+)/dislike$', 'wall.views.DislikeWallPost', name="DislikeWallPost"),
+    url(r'^wallpost/(?P<pk>[0-9]+)$', 'wall.views.WallPost', name="specific_post"),
 
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
