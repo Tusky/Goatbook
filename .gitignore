@@ -8,3 +8,6 @@ virtualenv
 *cache*
 chat.js
 main.js
+wall.js
+media/tmp/*
+
