@@ -28,7 +28,7 @@
         {% if user.is_authenticated %}
             <div id="profile">
                 <div class="profile_image_small">
-                    {% thumbnail user.get_profile.profile_pic "30x30" as profile_picture %}
+                    {% thumbnail user.get_profile.profile_pic "30x30" crop="center" as profile_picture %}
                         <img src="{{ profile_picture.url }}" alt="profile picture" />
                     {% endthumbnail %}
                 </div>

@@ -8,7 +8,7 @@
         <li>
             <div class="post">
                     <div class="image_container">
-                        {% thumbnail post.poster.get_profile.profile_pic "60x60" as profile_picture %}
+                        {% thumbnail post.poster.get_profile.profile_pic "60x60" crop="center" as profile_picture %}
                             <a href="{% url specific_url post.poster.username %}"><img src="{{ profile_picture.url }}" /></a>
                         {% endthumbnail %}
                     </div>

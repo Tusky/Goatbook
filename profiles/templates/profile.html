@@ -17,7 +17,7 @@
     {% endif %}
     <div class="user_profile">
         <div class="picture">
-            {% thumbnail profiles.get_profile.profile_pic "150x150" as im %}
+            {% thumbnail profiles.get_profile.profile_pic "150x150" crop="center" as im %}
                 <img src="{{ im.url }}" />
             {% endthumbnail %}
         </div>

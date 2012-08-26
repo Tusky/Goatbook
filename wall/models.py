@@ -15,3 +15,13 @@ class WallPost(models.Model):
         return self.poster.get_full_name() + ' on ' + datetime.strftime(self.posted_on, "%Y-%m-%d %H:%M:%S")
 
 admin.site.register(WallPost)
+
+class WallComment(models.Model):
+    commenter   = models.ForeignKey(User, related_name="commenter")
+    comment     = models.TextField(_("Comment"))
+    commented_on= models.DateTimeField(_('Commented On'), auto_now_add=True)
+    wallpost    = models.ForeignKey(WallPost)
+
+    def __unicode__(self):
+        return self.commenter.get_full_name() + " at " + str(self.wallpost)
+admin.site.register(WallComment)
