@@ -161,10 +161,12 @@ p.the_post{
   .dislike{
     @extend .like;
   }
+  .comments{
+	@extend .like;
+  }
   .date{
     display: inline-block;
     span{
-
     }
   }
 }
@@ -189,4 +191,35 @@ span.dislike{
     top: 6px;
   }
   color: red;
+}
+
+.comments{
+  margin-top: 3px;
+  .comment{
+	padding: 2px 3px;
+	margin: 1px;
+	display: block;
+	background-color: lighten(#6B84B4,30);
+	border: 1px solid darken(#6B84B4,20);
+	.content{
+	  	padding: 0px 10px;
+		font: 13px 'lucida grande',tahoma,verdana,arial,sans-serif;
+	}
+	.commenter{
+	  display: inline-block;
+	  a{
+		font: 8px 'lucida grande',tahoma,verdana,arial,sans-serif;
+		margin-right: 30px;
+		text-decoration: none;
+		color: #6B84B4;
+		&:hover{
+		  text-decoration: underline;
+		}
+	  }
+	}
+	.date{
+	  @extend .commenter;
+	  margin: 0;
+	}
+  }
 }

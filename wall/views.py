@@ -4,7 +4,7 @@ from django.db.models.query_utils import Q
 from django.http import HttpResponse
 from django.utils import simplejson
 from wall.forms import WallPostForm
-from wall.models import WallPost
+from wall.models import WallPost, WallComment
 from profiles.models import Profile
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -18,11 +18,16 @@ def Wall(request):
         for friend in friends.friends.all():
             #Join yours and each of your friends querysets into one.
             posts = posts | WallPost.objects.filter(poster=friend)
+
+    posts = posts.order_by('posted_on').reverse()[:50]
+    for post in posts:
+       post.comments = WallComment.objects.filter(wallpost=post)
+
     context={
-        'posts': posts.order_by('posted_on').reverse()[:50],
+        'posts': posts,
         'form': WallPostForm(),
         'sliceUp': ":%s" % limit,
-        'sliceDown': "%s:" % limit,
+        'sliceDown': "%s:" % limit
     }
     return render_to_response("wall.html", context, context_instance=RequestContext(request))
 

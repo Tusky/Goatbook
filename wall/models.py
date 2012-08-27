@@ -20,7 +20,7 @@ class WallComment(models.Model):
     commenter   = models.ForeignKey(User, related_name="commenter")
     comment     = models.TextField(_("Comment"))
     commented_on= models.DateTimeField(_('Commented On'), auto_now_add=True)
-    wallpost    = models.ForeignKey(WallPost)
+    wallpost    = models.ForeignKey(WallPost, related_name="wallpost")
 
     def __unicode__(self):
         return self.commenter.get_full_name() + " at " + str(self.wallpost)

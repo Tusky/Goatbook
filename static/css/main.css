@@ -257,16 +257,16 @@ p.the_post {
 
 .options {
   margin-left: 70px; }
-  .options .like, .options .dislike {
+  .options .like, .options .dislike, .options .comments {
     display: inline-block;
     margin-right: 5px; }
-    .options .like:after, .options .dislike:after {
+    .options .like:after, .options .dislike:after, .options .comments:after {
       margin-left: 5px;
       content: "\00B7"; }
-    .options .like span, .options .dislike span {
+    .options .like span, .options .dislike span, .options .comments span {
       color: #6B84B4;
       cursor: pointer; }
-      .options .like span:hover, .options .dislike span:hover {
+      .options .like span:hover, .options .dislike span:hover, .options .comments span:hover {
         text-decoration: underline; }
   .options .date {
     display: inline-block; }
@@ -274,11 +274,11 @@ p.the_post {
 .opinion {
   margin-bottom: 10px; }
 
-span.like, .options span.dislike, span.dislike {
+span.like, .options span.dislike, .options span.comments, span.dislike {
   color: blue;
   display: block;
   line-height: 16px; }
-  span.like img, .options span.dislike img, span.dislike img {
+  span.like img, .options span.dislike img, .options span.comments img, span.dislike img {
     position: relative;
     top: 4px; }
 
@@ -286,5 +286,28 @@ span.dislike {
   color: red; }
   span.dislike img {
     top: 6px; }
+
+.comments {
+  margin-top: 3px; }
+  .comments .comment {
+    padding: 2px 3px;
+    margin: 1px;
+    display: block;
+    background-color: #d1d8e7;
+    border: 1px solid #3e537b; }
+    .comments .comment .content {
+      padding: 0px 10px;
+      font: 13px 'lucida grande',tahoma,verdana,arial,sans-serif; }
+    .comments .comment .commenter, .comments .comment .date {
+      display: inline-block; }
+      .comments .comment .commenter a, .comments .comment .date a {
+        font: 8px 'lucida grande',tahoma,verdana,arial,sans-serif;
+        margin-right: 30px;
+        text-decoration: none;
+        color: #6B84B4; }
+        .comments .comment .commenter a:hover, .comments .comment .date a:hover {
+          text-decoration: underline; }
+    .comments .comment .date {
+      margin: 0; }
 
 /* _footer.scss */

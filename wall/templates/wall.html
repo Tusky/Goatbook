@@ -53,9 +53,21 @@
                     <div class="dislike">
                         <span>{% if user in post.hated_by.all %}Disliked{% else %}Dislike{% endif %}</span>
                     </div>
+                    <div class="comments">
+                        <span>{{ post.comments|length }} Comment</span>
+                    </div>
                     <div class="date">
                         <a href="{% url specific_post post.pk %}"><abbr class="timeago" title="{{ post.posted_on|date:"Y-m-d\TH:m:s\Z" }}">{{ post.posted_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr></a>
                     </div>
+                </div>
+                <div class="comments" style="display: none;">
+                    {% for comment in post.comments.all %}
+                        <div class="comment">
+                            <div class="content">{{ comment.comment }}</div>
+                            <div class="commenter"><a href="{% url specific_url comment.commenter %}">{{ comment.commenter.get_full_name }}</a></div>
+                            <div class="date">{{ comment.commented_on }}</div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </li>
