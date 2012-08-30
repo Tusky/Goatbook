@@ -3,8 +3,10 @@
 {% block title %}X's profile{% endblock title %}
 
 {% block content %}
-    <form action="" method="POST">
-        {{ form.as_p }}
+    <form action="{% url addWallPost %}" method="POST">
+        {% csrf_token %}
+        {{ wallpost.as_p }}
+        <input type="submit" value="Post" />
     </form>
     <ul id="posts">
     {% for post in posts %}
@@ -60,14 +62,22 @@
                         <a href="{% url specific_post post.pk %}"><abbr class="timeago" title="{{ post.posted_on|date:"Y-m-d\TH:m:s\Z" }}">{{ post.posted_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr></a>
                     </div>
                 </div>
-                <div class="comments" style="display: none;">
+                <div class="comments {{ post.pk }}" style="/*display: none;">
                     {% for comment in post.comments.all %}
-                        <div class="comment">
+                        <div class="comment {{ comment.pk }}">
                             <div class="content">{{ comment.comment }}</div>
                             <div class="commenter"><a href="{% url specific_url comment.commenter %}">{{ comment.commenter.get_full_name }}</a></div>
-                            <div class="date">{{ comment.commented_on }}</div>
+                            <div class="date"><abbr class="timeago" title="{{ comment.commented_on|date:"Y-m-d\TH:i:s\Z" }}">{{ comment.commented_on }}</abbr></div>
+                            <div class="options">{% if comment.commenter == user %}<span class="delete" data-commentid="{{ comment.pk }}">Delete</span>{% endif %}</div>
                         </div>
                     {% endfor %}
+                        <div class="add_comment">
+                            <form action="{% url addWallComment post.pk %}" method="POST">
+                                {% csrf_token %}
+                                {{ wallcomment }}
+                                <input type="submit" class="post_comment" value="comment" />
+                            </form>
+                        </div>
                 </div>
             </div>
         </li>

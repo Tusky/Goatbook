@@ -5,3 +5,9 @@ class WallPostForm(forms.Form):
                                                                                 'autofocus':'autofocus',
                                                                                 'placeholder': 'What\'s on your mind?',
                                                                                 'autocomplete': 'off'}))
+
+class WallCommentForm(forms.Form):
+    wallcomment      = forms.CharField(label="", widget=forms.Textarea(attrs={
+                                                                                'class':        'commentbox',
+                                                                                'placeholder':  'Write a comment...',
+                                                                                'autocomplete': 'off'}))

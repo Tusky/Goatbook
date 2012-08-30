@@ -47,12 +47,11 @@ def User_Profile_Login(request):
         return HttpResponseRedirect('/')
     if request.method == 'POST':
         form = LoginForm(request.POST)
+        print form
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            profile = authenticate(username=username, password=password)
-            if profile is not None:
-                login(request, profile)
+            myProfile = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            if myProfile is not None:
+                login(request, myProfile)
                 return HttpResponseRedirect('/')
             else:
                 return render_to_response('login.html', { 'form': form }, context_instance=RequestContext(request))

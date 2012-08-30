@@ -1,13 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect,HttpResponse
 from django.utils import simplejson
-from wall.forms import WallPostForm
+from wall.forms import WallPostForm, WallCommentForm
 from wall.models import WallPost, WallComment
 from profiles.models import Profile
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from datetime import date
 
 @login_required
 def Wall(request):
@@ -25,7 +27,8 @@ def Wall(request):
 
     context={
         'posts': posts,
-        'form': WallPostForm(),
+        'wallpost': WallPostForm(),
+        'wallcomment': WallCommentForm(),
         'sliceUp': ":%s" % limit,
         'sliceDown': "%s:" % limit
     }
@@ -71,6 +74,45 @@ def DislikeWallPost(request, pk):
         except ObjectDoesNotExist:
             return HttpResponse(simplejson.dumps({"response": "false"}), mimetype="application/json")
 
+@login_required
+def addWallPost(request):
+    return HttpResponse(simplejson.dumps({"response": request.user.username}), mimetype="application/json")
+
+@login_required
+def addWallComment(request, PostID):
+    #commenter, comment, wallpost
+    if request.method == "POST":
+        form = WallCommentForm(request.POST)
+        if form.is_valid():
+            Post = WallPost.objects.get(pk = PostID)
+            newComment = WallComment.objects.create(commenter = request.user, comment = form.cleaned_data['wallcomment'], wallpost=Post)
+            newComment.save()
+            return HttpResponseRedirect('/')
+            return HttpResponse(simplejson.dumps({"response": PostID }), mimetype="application/json")
+    else:
+        return HttpResponse(simplejson.dumps({"response": "No, just no"}), mimetype="application/json")
+
+def removeWallComment(request, PostID):
+    try:
+        comment = WallComment.objects.get(pk = PostID)
+        comment.delete()
+        return HttpResponse(simplejson.dumps({"response": "True" }), mimetype="application/json")
+    except ObjectDoesNotExist:
+        return HttpResponse(simplejson.dumps({"response": "False" }), mimetype="application/json")
+
+def WallPostComments(request, PostID):
+    response = []
+    wallpost = WallPost.objects.get(pk = PostID)
+    comments = WallComment.objects.filter(wallpost = wallpost)
+    for comment in comments:
+        if comment.commenter == request.user:
+            ownComment = "True"
+        else:
+            ownComment = "False"
+        response +=[
+            (comment.pk, ownComment, comment.commenter.get_full_name(), reverse('specific_url', args=[comment.commenter.username]), comment.comment, date.strftime(comment.commented_on, "%Y-%m-%d %H:%M:%S")),
+        ]
+    return HttpResponse(simplejson.dumps({"response": "ok", "comments": response }), mimetype="application/json")
 
 def getPostLikesAndDislikes(pk):
     wallpost = WallPost.objects.get(pk=pk)
@@ -91,3 +133,4 @@ def getPostLikesAndDislikes(pk):
             disliked += dislikes.get_full_name()+","
         j+=1
     return liked, disliked
+
