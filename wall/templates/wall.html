@@ -59,7 +59,7 @@
                         <span>{{ post.comments|length }} Comment</span>
                     </div>
                     <div class="date">
-                        <a href="{% url specific_post post.pk %}"><abbr class="timeago" title="{{ post.posted_on|date:"Y-m-d\TH:m:s\Z" }}">{{ post.posted_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr></a>
+                        <a href="{% url specific_post post.pk %}"><abbr class="timeago" title="{{ post.posted_on|date:"Y-m-d H:i:s"}}">{{ post.posted_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr></a>
                     </div>
                 </div>
                 <div class="comments {{ post.pk }}" style="/*display: none;">
@@ -67,7 +67,7 @@
                         <div class="comment {{ comment.pk }}">
                             <div class="content">{{ comment.comment }}</div>
                             <div class="commenter"><a href="{% url specific_url comment.commenter %}">{{ comment.commenter.get_full_name }}</a></div>
-                            <div class="date"><abbr class="timeago" title="{{ comment.commented_on|date:"Y-m-d\TH:i:s\Z" }}">{{ comment.commented_on }}</abbr></div>
+                            <div class="date"><abbr class="timeago" title="{{ comment.commented_on|date:"Y-m-d H:i:s" }}">{{ comment.commented_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr></div>
                             <div class="options">{% if comment.commenter == user %}<span class="delete" data-commentid="{{ comment.pk }}">Delete</span>{% endif %}</div>
                         </div>
                     {% endfor %}
