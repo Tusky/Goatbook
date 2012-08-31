@@ -76,7 +76,12 @@ def DislikeWallPost(request, pk):
 
 @login_required
 def addWallPost(request):
-    return HttpResponse(simplejson.dumps({"response": request.user.username}), mimetype="application/json")
+    if request.method == "POST":
+        form = WallPostForm(request.POST)
+        if form.is_valid():
+            newPost = WallPost.objects.create(poster=request.user, post = form.cleaned_data['wallpost'])
+            newPost.save()
+            return HttpResponse(simplejson.dumps({"response": "Ok"}), mimetype="application/json")
 
 @login_required
 def addWallComment(request, PostID):
