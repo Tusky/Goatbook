@@ -5,8 +5,8 @@
 {% block content %}
     <form action="{% url addWallPost %}" method="POST">
         {% csrf_token %}
-        {{ wallpost.as_p }}
-        <input type="submit" value="Post" />
+        {{ wallpost }}
+        <input type="submit" id="wallpost_send" value="Post" />
     </form>
     <ul id="posts">
     {% for post in posts %}
@@ -62,7 +62,7 @@
                         <a href="{% url specific_post post.pk %}"><abbr class="timeago" title="{{ post.posted_on|date:"Y-m-d H:i:s"}}">{{ post.posted_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr></a>
                     </div>
                 </div>
-                <div class="comments {{ post.pk }}" style="/*display: none;">
+                <div class="comments {{ post.pk }}" style="display: none;">
                     {% for comment in post.comments.all %}
                         <div class="comment {{ comment.pk }}">
                             <div class="content">{{ comment.comment }}</div>

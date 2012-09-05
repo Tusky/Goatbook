@@ -252,12 +252,21 @@ span.dislike{
 .post_comment{
   display: inline-block;
   position: relative;
-  top: -12px;
+  top: -11px;
   left: -1px;
-  height: 30px;
+  height: 32px;
   width: 70px;
   font-family: 'Source Sans Pro', sans-serif;
   color: black;
   background-color: lighten($site_color_scheme, 20);
   border: 1px solid darken($site_color_scheme, 15);
+}
+
+#id_wallpost{
+  @extend .commentbox;
+}
+
+#wallpost_send{
+  @extend .post_comment;
+  top: -21px;
 }
