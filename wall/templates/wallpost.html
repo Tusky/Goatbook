@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{ post.poster.get_full_name }}'s post{% endblock title %}
+
+{% block content %}
+        <div class="post">
+                <div class="image_container">
+                    {% thumbnail post.poster.get_profile.profile_pic "60x60" crop="center" as profile_picture %}
+                        <a href="{% url specific_url post.poster.username %}"><img src="{{ profile_picture.url }}" /></a>
+                    {% endthumbnail %}
+                </div>
+            <div class="details">
+                <span class="name"><a href="{% url specific_url post.poster.username %}">{{ post.poster.get_full_name }}</a></span>
+                <p class="the_post">{{ post.post }}</p>
+                <div class="opinion">
+                    <span class="like">
+                        <img src="{{ STATIC_URL }}images/like.png" />
+                        <span>
+                            {% if post.liked_by.all|length > 0 %}
+                                {% for like in post.liked_by.all|slice:sliceUp %}{{ like.get_full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                                {% if post.liked_by.all|slice:sliceDown|length > 0 %}
+                                    and <abbr title="{% for like in post.liked_by.all|slice:sliceDown %}{{ like.get_full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}">{{ post.liked_by.all|slice:sliceDown|length }} more</abbr>
+                                {% endif %}
+                            {% endif %}
+                        </span>
+                        like this.
+                    </span>
+
+                    <span class="dislike">
+                        <img src="{{ STATIC_URL }}images/dislike.png" />
+                        <span>
+                            {% if post.hated_by.all|length > 0 %}
+                                {% for dislike in post.hated_by.all|slice:sliceUp %}{{ dislike.get_full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                                {% if post.hated_by.all|slice:sliceDown|length > 0 %}
+                                    and <abbr title="{% for dislike in post.hated_by.all|slice:sliceDown %}{{ dislike.get_full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}">{{ post.hated_by.all|slice:sliceDown|length }} more</abbr>
+                                {% endif %}
+                            {% endif %}
+                        </span>
+                        dislike this.
+                    </span>
+                </div>
+            </div>
+            <div class="options">
+                <div class="like">
+                    <span>{% if user in post.liked_by.all %}Liked{% else %}Like{% endif %}</span>
+                </div>
+                <div class="dislike">
+                    <span>{% if user in post.hated_by.all %}Disliked{% else %}Dislike{% endif %}</span>
+                </div>
+                <div class="comments">
+                    <span>{{ post.comments|length }} Comment</span>
+                </div>
+                <div class="date">
+                    <a href="{% url specific_post post.pk %}"><abbr class="timeago" title="{{ post.posted_on|date:"Y-m-d H:i:s"}}">{{ post.posted_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr></a>
+                </div>
+            </div>
+            <div class="comments {{ post.pk }}">
+                {% for comment in post.comments.all %}
+                    <div class="comment {{ comment.pk }}">
+                        <div class="content">{{ comment.comment }}</div>
+                        <div class="commenter"><a href="{% url specific_url comment.commenter %}">{{ comment.commenter.get_full_name }}</a></div>
+                        <div class="date"><abbr class="timeago" title="{{ comment.commented_on|date:"Y-m-d H:i:s" }}">{{ comment.commented_on|date:"l, F d, Y \a\t g:m:sa" }}</abbr></div>
+                        <div class="options">{% if comment.commenter == user %}<span class="delete" data-commentid="{{ comment.pk }}">Delete</span>{% endif %}</div>
+                    </div>
+                {% endfor %}
+                    <div class="add_comment">
+                        <form action="{% url addWallComment post.pk %}" method="POST">
+                            {% csrf_token %}
+                            {{ wallcomment }}
+                            <input type="submit" class="post_comment" value="comment" />
+                        </form>
+                    </div>
+            </div>
+        </div>
+    <script type="text/javascript">
+    $().ready(function(){
+        $('abbr.timeago').timeago();
+    })
+</script>
+{% endblock content %}
+
+{% block js %}
+<script src="{{ STATIC_URL }}js/jquery.autosize-min.js"></script>
+<script src="{{ STATIC_URL }}js/wall.min.js"></script>
+<script src="{{ STATIC_URL }}js/timeago.min.js"></script>
+{% endblock js %}

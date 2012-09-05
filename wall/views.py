@@ -139,3 +139,15 @@ def getPostLikesAndDislikes(pk):
         j+=1
     return liked, disliked
 
+def singlePost(request, pk):
+    wallpost = WallPost.objects.get(pk=pk)
+    wallpost.comments = WallComment.objects.filter(wallpost=pk)
+
+    limit = 2
+    context = {
+        'post': wallpost,
+        'wallcomment': WallCommentForm(),
+        'sliceUp': ":%s" % limit,
+        'sliceDown': "%s:" % limit
+    }
+    return render_to_response("wallpost.html", context, context_instance=RequestContext(request))
