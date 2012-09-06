@@ -41,7 +41,11 @@ urlpatterns = patterns('',
     url(r'^wallpost/(?P<pk>[0-9]+)/dislike$', 'wall.views.DislikeWallPost', name="DislikeWallPost"),
     url(r'^wallpost/(?P<pk>[0-9]+)$', 'wall.views.singlePost', name="specific_post"),
 
-
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
 urlpatterns += staticfiles_urlpatterns()
+
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        url(r'^rosetta/', include('rosetta.urls')),
+    )

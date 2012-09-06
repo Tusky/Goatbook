@@ -1,3 +1,4 @@
+import csv
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
@@ -30,7 +31,8 @@ def Wall(request):
         'wallpost': WallPostForm(),
         'wallcomment': WallCommentForm(),
         'sliceUp': ":%s" % limit,
-        'sliceDown': "%s:" % limit
+        'sliceDown': "%s:" % limit,
+        'available_languages': ['en', 'hu']
     }
     return render_to_response("wall.html", context, context_instance=RequestContext(request))
 

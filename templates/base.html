@@ -23,7 +23,7 @@
                 {% csrf_token %}
                 <input type="search" id="search_box" autocomplete="off" name="search_keyword"/>
                 <div id="search_results"><ul></ul></div>
-                <input type="submit" value="Search!" />
+{#                <input type="submit" value="Search!" />#}
             </form>
         </div>
         {% if user.is_authenticated %}

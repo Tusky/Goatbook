@@ -344,4 +344,7 @@ span.dislike {
 #wallpost_send {
   top: -21px; }
 
+#search_box {
+  width: 300px; }
+
 /* _footer.scss */

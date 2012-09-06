@@ -1,8 +1,10 @@
 {% extends "base.html" %}
-{% load thumbnail %}
-{% block title %}{{ user.get_full_name }}'s profile{% endblock title %}
+{% load thumbnail i18n %}
+{% block title %}{{ user.get_full_name }}{% trans "'s profile" %}{% endblock title %}
 
 {% block content %}
+    {% get_language_info_list for available_languages as langs %}
+    {% for lang in langs %} {{ lang }} {% endfor %}
     <form action="{% url addWallPost %}" method="POST">
         {% csrf_token %}
         {{ wallpost }}

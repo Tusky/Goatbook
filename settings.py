@@ -36,6 +36,11 @@ TIME_ZONE = 'Europe/Budapest'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = (
+    ('hu', 'Hungarian'),
+    ('en', 'English'),
+    )
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -99,6 +104,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware'
 )
 
 AUTH_PROFILE_MODULE = 'profiles.Profile'
@@ -130,6 +136,7 @@ INSTALLED_APPS = (
     'messages',
     'wall',
 
+    'rosetta',
     'south',
 )
 
