@@ -6,10 +6,6 @@ def rel(*x):
 DEBUG = True
 THUMBNAIL_DEBUG = TEMPLATE_DEBUG = True
 
-ADMINS = (
-    ('Richard Hajdu', 'tuskone16@gmail.com'),
-)
-
 MANAGERS = ADMINS
 
 DATABASES = {
